@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useContext } from "react";
 import { View, TouchableOpacity, StyleSheet, BackHandler, SafeAreaView, StatusBar, Text, Image } from "react-native";
-import HomeScreen from "../screens/home/homeScreen";
+// import HomeScreen from "../screens/home/homeScreen";
+import FeedScreen from "../screens/home/feedScreen";
 import { Colors, Fonts, Sizes } from "../constants/styles";
 import { useFocusEffect } from "@react-navigation/native";
 import NotificationScreen from "../screens/notification/notificationScreen";
@@ -23,13 +24,6 @@ const BottomTabBarScreen = ({ navigation }) => {
         }, [backAction])
     );
 
-    function _spring() {
-        updateState({ backClickCount: 1 });
-        setTimeout(() => {
-            updateState({ backClickCount: 0 })
-        }, 1000)
-    }
-
     const [state, setState] = useState({
         backClickCount: 0,
     });
@@ -44,7 +38,7 @@ const BottomTabBarScreen = ({ navigation }) => {
             <StatusBar translucent={false} backgroundColor={Colors.primaryColor} />
             <View style={{ flex: 1, }}>
                 {index == 1 ?
-                    <HomeScreen navigation={navigation} />
+                    <FeedScreen navigation={navigation} />
                     :
                     index == 2 ?
                         <NotificationScreen navigation={navigation} />
@@ -117,6 +111,13 @@ const BottomTabBarScreen = ({ navigation }) => {
                     />
                 </TouchableOpacity>
         )
+    }
+
+    function _spring() {
+        updateState({ backClickCount: 1 });
+        setTimeout(() => {
+            updateState({ backClickCount: 0 })
+        }, 1000)
     }
 }
 

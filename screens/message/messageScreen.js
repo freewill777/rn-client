@@ -4,37 +4,37 @@ import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialIcons } from '@expo/vector-icons';
 import { useLayoutEffect } from 'react';
 
-// import io from "socket.io-client";
+import io from "socket.io-client";
 import userList from './users';
 import channelList from './channelList';
-// export const socket = io("http://192.168.0.17:3000");
+export const socket = io("http://192.168.0.17:3000");
 
 const MessageScreen = ({ navigation }) => {
 
     const [onlineUsers, setOnlineUsers] = useState(userList)
     const [availableChannels, setAvailableChannels] = useState(channelList)
 
-    // useLayoutEffect(() => {
-    //     socket.emit("getRoomsList");
-    //     socket.on("roomsList", (roomsList) => {
-    //         setAvailableChannels(roomsList);
-    //     });
-    //     socket.on("usersList", (usersList) => {
-    //         setOnlineUsers(usersList);
-    //     });
-    // }, []);
+    useLayoutEffect(() => {
+        socket.emit("getRoomsList");
+        socket.on("roomsList", (roomsList) => {
+            setAvailableChannels(roomsList);
+        });
+        socket.on("usersList", (usersList) => {
+            setOnlineUsers(usersList);
+        });
+    }, []);
 
-    // useEffect(() => {
-    //     return () => {
-    //         socket.disconnect();
-    //     };
-    // }, [])
+    useEffect(() => {
+        return () => {
+            socket.disconnect();
+        };
+    }, [])
 
-    // React.useEffect(() => {
-    //     navigation.setOptions({
-    //         socket,
-    //     });
-    // }, [navigation, socket]);
+    React.useEffect(() => {
+        navigation.setOptions({
+            socket,
+        });
+    }, [navigation, socket]);
 
     return (
         <SafeAreaView

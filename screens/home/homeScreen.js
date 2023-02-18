@@ -68,7 +68,7 @@ const todaysPostsList = [
     {
         id: '1',
         userProfilePic: require('../../assets/images/users/user37.png'),
-        userName: 'Turneu basket junior 2',
+        userName: 'Event 0',
         userDetail: 'Predeal, Brasov',
         aboutPost: 'Nu pierdeti ocazia de a fi martori la viitorii campioni de baschet in acțiune, la turneul pentru juniori din Predeal!',
         postLikes: '10k',
@@ -80,7 +80,7 @@ const todaysPostsList = [
     {
         id: '2',
         userProfilePic: require('../../assets/images/users/user26.png'),
-        userName: 'Campionat fotbal junior 3',
+        userName: 'Event 1',
         userDetail: 'Predeal, Brasov',
         aboutPost: 'Vino sa vezi talentele viitorului in acțiune la turneul de fotbal pentru juniori din Predeal!',
         postLikes: '10k',
@@ -133,7 +133,7 @@ const oldPostsList = [
     {
         id: '1',
         userProfilePic: require('../../assets/images/users/user3.png'),
-        userName: 'Campionat fotbal junior 3',
+        userName: 'Event 1',
         userDetail: 'Allentown, New Mexico',
         aboutPost: dummyText,
         postLikes: '10k',
@@ -145,7 +145,7 @@ const oldPostsList = [
     {
         id: '2',
         userProfilePic: require('../../assets/images/users/user8.png'),
-        userName: 'Campionat fotbal junior 3',
+        userName: 'Event 2',
         userDetail: 'Allentown, New Mexico',
         aboutPost: dummyText,
         postLikes: '10k',
@@ -486,10 +486,10 @@ const HomeScreen = ({ navigation }) => {
                     />
                     <Text>
                         <Text style={{ ...Fonts.primaryColor12ExtraBold }}>
-                            Harmonie { }
+                            React { }
                         </Text>
                         <Text style={{ ...Fonts.secondaryColor12ExtraBold }}>
-                            Predeal
+                            Social
                         </Text>
                     </Text>
                 </View>

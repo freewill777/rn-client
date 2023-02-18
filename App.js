@@ -84,6 +84,7 @@ const App = () => {
                     <Stack.Screen name="Signin" component={SigninScreen} options={{ ...TransitionPresets.DefaultTransition }} />
                     <Stack.Screen name="Signup" component={SignupScreen} />
                     <Stack.Screen name="Verification" component={VerificationScreen} />
+                    {/*  */}
                     <Stack.Screen name="BottomTabBar" component={DrawerNavigation} />
                     <Stack.Screen name="Search" component={SearchScreen} />
                     <Stack.Screen name="SearchDetail" component={SearchDetailScreen} />

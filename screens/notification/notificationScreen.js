@@ -228,18 +228,18 @@ const NotificationScreen = ({ navigation }) => {
     };
 
     const renderItem = (data) => (
-        <Animated.View
-            style={[
-                {
-                    height: rowTranslateAnimatedValues[
-                        data.item.key
-                    ].interpolate({
-                        inputRange: ['0%', '100%'],
-                        outputRange: ["0%", "100%"],
-                    }),
-                },
-            ]}
-        >
+        // <Animated.View
+        //     style={[
+        //         {
+        //             height: rowTranslateAnimatedValues[
+        //                 data.item.key
+        //             ].interpolate({
+        //                 inputRange: ['0%', '100%'],
+        //                 outputRange: ["0%", "100%"],
+        //             }),
+        //         },
+        //     ]}
+        // >
             <View style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
                 <View style={{ marginHorizontal: Sizes.fixPadding * 2.0, }}>
                     {
@@ -431,7 +431,7 @@ const NotificationScreen = ({ navigation }) => {
                     <View style={{ backgroundColor: Colors.extraLightGrayColor, height: 1.0, marginVertical: Sizes.fixPadding, }} />
                 </View>
             </View>
-        </Animated.View>
+        // </Animated.View>
     );
 
     const renderHiddenItem = () => (

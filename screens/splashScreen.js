@@ -34,7 +34,7 @@ const SplashScreen = ({ navigation }) => {
                     Harmonie { }
                 </Text>
                 <Text style={{ ...Fonts.whiteColor20ExtraBold }}>
-                    Predeal
+                    Title
                 </Text>
             </Text>
         )
