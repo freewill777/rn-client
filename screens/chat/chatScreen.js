@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
 import { View, Text, StyleSheet, FlatList, Dimensions, Image, TextInput, SafeAreaView, StatusBar } from "react-native";
 import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialIcons } from '@expo/vector-icons';
@@ -11,10 +11,13 @@ const receiverImage = require('../../assets/images/users/user12.png');
 
 const senderImage = require('../../assets/images/users/user43.png');
 
+import { SocketContext } from "../../SocketProvider";
+
 const ChatScreen = ({ navigation, route }) => {
-    const { room, socket } = route.params;
-    console.log('room', room)
-    console.log('socket', socket)
+    const { room } = route.params;
+    const { socket } = useContext(SocketContext)
+    // console.log('room', room)
+    // console.log('socket', socket)
     const [messagesList, setMessagesList] = useState(userMessages);
 
     useLayoutEffect(() => {

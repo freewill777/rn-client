@@ -88,10 +88,7 @@ const MessageScreen = ({ navigation }) => {
                                 <TouchableOpacity
                                     activeOpacity={0.8}
                                     onPress={() => {
-                                        navigation.push('Chat', {
-                                            room: id,
-                                            socket,
-                                        })
+                                        navigation.push('Chat', { room: id })
                                     }}
                                     style={{ flexDirection: 'row', justifyContent: 'space-between' }}
                                 >
