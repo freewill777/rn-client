@@ -1,18 +1,19 @@
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, FlatList, Image, TouchableOpacity } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialIcons } from '@expo/vector-icons';
 import { useLayoutEffect } from 'react';
+import { SocketContext } from '../../SocketProvider';
 
-import io from "socket.io-client";
 import userList from './users';
 import channelList from './channelList';
-export const socket = io("http://192.168.0.17:3000");
+
 
 const MessageScreen = ({ navigation }) => {
 
     const [onlineUsers, setOnlineUsers] = useState(userList)
     const [availableChannels, setAvailableChannels] = useState(channelList)
+    const { socket } = useContext(SocketContext)
 
     useLayoutEffect(() => {
         socket.emit("getRoomsList");
@@ -23,18 +24,6 @@ const MessageScreen = ({ navigation }) => {
             setOnlineUsers(usersList);
         });
     }, []);
-
-    useEffect(() => {
-        return () => {
-            socket.disconnect();
-        };
-    }, [])
-
-    React.useEffect(() => {
-        navigation.setOptions({
-            socket,
-        });
-    }, [navigation, socket]);
 
     return (
         <SafeAreaView
@@ -55,20 +44,6 @@ const MessageScreen = ({ navigation }) => {
     )
 
     function activeUsers() {
-        const renderItem = ({ item }) => (
-            <View style={{ alignItems: 'center', marginHorizontal: Sizes.fixPadding - 5.0, }}>
-                <View>
-                    <Image
-                        source={item.userProfilePic}
-                        style={{ width: 40.0, height: 40.0, borderRadius: 20.0 }}
-                    />
-                    <View style={styles.activeSmallIndicatorStyle} />
-                </View>
-                <Text style={{ marginTop: Sizes.fixPadding - 5.0, ...Fonts.blackColor12Regular }}>
-                    {item.userProfileName}
-                </Text>
-            </View>
-        )
         return (
             <View>
                 <FlatList
@@ -76,7 +51,20 @@ const MessageScreen = ({ navigation }) => {
                     showsHorizontalScrollIndicator={false}
                     data={onlineUsers}
                     keyExtractor={(item) => `${item.id}`}
-                    renderItem={renderItem}
+                    renderItem={({ item }) => (
+                        <View style={{ alignItems: 'center', marginHorizontal: Sizes.fixPadding - 5.0, }}>
+                            <View>
+                                <Image
+                                    source={item.userProfilePic}
+                                    style={{ width: 40.0, height: 40.0, borderRadius: 20.0 }}
+                                />
+                                <View style={styles.activeSmallIndicatorStyle} />
+                            </View>
+                            <Text style={{ marginTop: Sizes.fixPadding - 5.0, ...Fonts.blackColor12Regular }}>
+                                {item.userProfileName} pula
+                            </Text>
+                        </View>
+                    )}
                     contentContainerStyle={{ paddingHorizontal: Sizes.fixPadding + 5.0, paddingVertical: Sizes.fixPadding * 2.0, }}
                 />
             </View>
@@ -86,55 +74,51 @@ const MessageScreen = ({ navigation }) => {
 
 
     function ChatsInfo() {
-        const renderItem = ({ item }) => {
-            const { name, id } = item
-            return (
-                <View style={{ marginHorizontal: Sizes.fixPadding * 2.0, }}>
-                    <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => {
-                            navigation.push('Chat', {
-                                room: id,
-                                socket,
-                            })
-                        }}
-                        style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-                    >
-                        <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, }}>
-                            <View>
-                                <Image
-                                    source={require('../../assets/images/sports/football.jpg')}
-                                    style={{ width: 50.0, height: 50.0, borderRadius: 25.0, }}
-                                />
-                            </View>
-                            <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding, }}>
-                                <Text numberOfLines={1} style={{ ...Fonts.blackColor16SemiBold }}>
-                                    {item.name}
-                                </Text>
-                                <Text numberOfLines={1} style={{ ...Fonts.grayColor14Regular }}>
-                                    {item.id}
-                                </Text>
-                            </View>
-                        </View>
-                        <Text style={{ ...Fonts.blackColor12SemiBold }}>
-                            {item.time}
-                        </Text>
-                    </TouchableOpacity>
-                    <View style={{ backgroundColor: Colors.extraLightGrayColor, height: 1.0, marginVertical: Sizes.fixPadding }} />
-                </View>
-            )
-        }
         return (
             <View style={{ flex: 1 }}>
                 {activeUsers()}
                 <FlatList
-                    // 
-                    // TODO change this with list received from srv
-                    // 
-                    // 
+                    // data coming from local file
                     data={availableChannels}
                     keyExtractor={(item) => `${item.id}`}
-                    renderItem={renderItem}
+                    renderItem={({ item }) => {
+                        const { name, id } = item
+                        return (
+                            <View style={{ marginHorizontal: Sizes.fixPadding * 2.0, }}>
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    onPress={() => {
+                                        navigation.push('Chat', {
+                                            room: id,
+                                            socket,
+                                        })
+                                    }}
+                                    style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+                                >
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, }}>
+                                        <View>
+                                            <Image
+                                                source={require('../../assets/images/sports/football.jpg')}
+                                                style={{ width: 50.0, height: 50.0, borderRadius: 25.0, }}
+                                            />
+                                        </View>
+                                        <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding, }}>
+                                            <Text numberOfLines={1} style={{ ...Fonts.blackColor16SemiBold }}>
+                                                {item.name}
+                                            </Text>
+                                            <Text numberOfLines={1} style={{ ...Fonts.grayColor14Regular }}>
+                                                {item.id}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    <Text style={{ ...Fonts.blackColor12SemiBold }}>
+                                        {item.time}
+                                    </Text>
+                                </TouchableOpacity>
+                                <View style={{ backgroundColor: Colors.extraLightGrayColor, height: 1.0, marginVertical: Sizes.fixPadding }} />
+                            </View>
+                        )
+                    }}
                     contentContainerStyle={{ paddingBottom: Sizes.fixPadding * 8.0 }}
                 />
             </View>

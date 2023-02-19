@@ -1,19 +1,22 @@
 /* eslint-disable global-require */
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import {
     StyleSheet,
     Text,
     View,
     SafeAreaView,
-    StatusBar,
     Image,
     Dimensions,
     FlatList,
     TouchableOpacity,
 } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+
 import { Colors, Fonts, Sizes } from "../../constants/styles";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { SwipeListView } from "react-native-swipe-list-view";
+
+import { UserContext } from "../../UserProvider";
 
 const { width, height } = Dimensions.get("window");
 const notifications = [
@@ -214,9 +217,6 @@ const notifications = [
     },
 ];
 
-const dummyText =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ipsum amet pellentesque in rhoncus, in erat.P Placerat et nunc ipsum donec urna feugiat suspendisse.";
-
 const todaysPostsList = [
     {
         id: "1",
@@ -246,87 +246,8 @@ const todaysPostsList = [
     },
 ];
 
-const suggestionsList = [
-    {
-        id: "1",
-        userProfilePic: require("../../assets/images/users/user11.png"),
-        userName: "Cristina Paul",
-        userAbout: "realtinashah",
-        isFollow: false,
-    },
-    {
-        id: "2",
-        userProfilePic: require("../../assets/images/users/user12.png"),
-        userName: "Ana Ionescu",
-        userAbout: "officialjiya",
-        isFollow: false,
-    },
-    {
-        id: "3",
-        userProfilePic: require("../../assets/images/users/user13.png"),
-        userName: "Cristi Paul",
-        userAbout: "joyyyyy",
-        isFollow: false,
-    },
-    {
-        id: "4",
-        userProfilePic: require("../../assets/images/users/user14.png"),
-        userName: "Mihai Patel",
-        userAbout: "ishanpatel",
-        isFollow: false,
-    },
-    {
-        id: "5",
-        userProfilePic: require("../../assets/images/users/user11.png"),
-        userName: "Ana Shah",
-        userAbout: "realtinashah",
-        isFollow: false,
-    },
-];
-
-const oldPostsList = [
-    {
-        id: "1",
-        userProfilePic: require("../../assets/images/users/user3.png"),
-        userName: "Event 1",
-        userDetail: "Allentown, New Mexico",
-        aboutPost: dummyText,
-        postLikes: "10k",
-        postComments: "100",
-        postShares: "35",
-        postImage: require("../../assets/images/contests/basketball.jpg"),
-        postLike: true,
-    },
-    {
-        id: "2",
-        userProfilePic: require("../../assets/images/users/user8.png"),
-        userName: "Event 2",
-        userDetail: "Allentown, New Mexico",
-        aboutPost: dummyText,
-        postLikes: "10k",
-        postComments: "100",
-        postShares: "35",
-        postImage: require("../../assets/images/contests/football.jpg"),
-        postLike: false,
-    },
-    {
-        id: "3",
-        userProfilePic: require("../../assets/images/users/user10.png"),
-        userName: "Ishan Khatri",
-        userDetail: "Allentown, New Mexico",
-        aboutPost: dummyText,
-        postLikes: "10k",
-        postComments: "100",
-        postShares: "35",
-        postImage: require("../../assets/images/posts/post5.png"),
-        postLike: false,
-    },
-];
-
 const FeedScreen = ({ navigation }) => {
     const [todaysPosts, setTodaysPosts] = useState(todaysPostsList);
-    const [suggestions, setSuggestions] = useState(suggestionsList);
-    const [oldPosts, setOldPosts] = useState(oldPostsList);
 
     const [listData, setListData] = useState(notifications);
     const [showSnackBar, setShowSnackBar] = useState(false);
@@ -755,12 +676,31 @@ const FeedScreen = ({ navigation }) => {
         </View>
         // </Animated.View>
     );
-
+    const { name } = useContext(UserContext)
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
-            <StatusBar translucent={false} backgroundColor={Colors.primaryColor} />
+            <StatusBar style="dark" />
             <View style={{ flex: 1 }}>
-                {header()}
+                {<View style={{ ...styles.headerWrapStyle, flexDirection: "row" }}>
+                    <View style={{ width: '50%', flexDirection: "row", alignItems: 'center' }}>
+                        <Image
+                            source={require("../../assets/images/homeAppLogo.png")}
+                            style={{ width: 26.0, height: 26.0, resizeMode: "contain", marginEnd: 10 }}
+                        />
+                        <Text>
+                            <Text style={{ ...Fonts.primaryColor12ExtraBold }}>React { }</Text>
+                            <Text style={{ ...Fonts.secondaryColor12ExtraBold }}>{name}</Text>
+                        </Text>
+                    </View>
+                    <View style={{ alignItems: "center", justifyContent: 'flex-end', width: '50%', flexDirection: "row" }}>
+                        <MaterialIcons
+                            name="search"
+                            size={24}
+                            color={Colors.blackColor}
+                            onPress={() => navigation.push("Search")}
+                        />
+                    </View>
+                </View >}
                 <FlatList
                     ListHeaderComponent={
                         <>
@@ -776,30 +716,6 @@ const FeedScreen = ({ navigation }) => {
         </SafeAreaView>
     );
 
-    function changeOldPosts({ id }) {
-        const copyPosts = oldPosts;
-        const newPosts = copyPosts.map((item) => {
-            if (item.id == id) {
-                return { ...item, postLike: !item.postLike };
-            } else {
-                return item;
-            }
-        });
-        setOldPosts(newPosts);
-    }
-
-    function updateSuggestions({ id }) {
-        const copySuggestions = suggestions;
-        const newSuggestions = copySuggestions.map((item) => {
-            if (item.id == id) {
-                return { ...item, isFollow: !item.isFollow };
-            } else {
-                return item;
-            }
-        });
-        setSuggestions(newSuggestions);
-    }
-
     function changeTodayPosts({ id }) {
         const copyPosts = todaysPosts;
         const newPosts = copyPosts.map((item) => {
@@ -812,29 +728,6 @@ const FeedScreen = ({ navigation }) => {
         setTodaysPosts(newPosts);
     }
 
-
-    function header() {
-        return (
-            <View style={styles.headerWrapStyle}>
-                <View style={{ alignItems: "center" }}>
-                    <Image
-                        source={require("../../assets/images/homeAppLogo.png")}
-                        style={{ width: 26.0, height: 26.0, resizeMode: "contain" }}
-                    />
-                    <Text>
-                        <Text style={{ ...Fonts.primaryColor12ExtraBold }}>React { }</Text>
-                        <Text style={{ ...Fonts.secondaryColor12ExtraBold }}>Social</Text>
-                    </Text>
-                </View>
-                <MaterialIcons
-                    name="search"
-                    size={24}
-                    color={Colors.blackColor}
-                    onPress={() => navigation.push("Search")}
-                />
-            </View>
-        );
-    }
 
     function noNotiificationInfo() {
         return (
@@ -885,9 +778,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: Sizes.fixPadding * 2.0,
+        padding: Sizes.fixPadding * 12.0,
         backgroundColor: Colors.whiteColor,
         elevation: 3.0,
+        flexWrap: 'wrap'
     },
     userProfilePicWrapStyle: {
         width: 60.0,

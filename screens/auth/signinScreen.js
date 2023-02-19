@@ -1,13 +1,16 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useContext } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, BackHandler, StatusBar, Dimensions, ScrollView, TextInput, TouchableOpacity, Image } from 'react-native'
 import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFocusEffect } from "@react-navigation/native";
 
+import { UserContext } from '../../UserProvider';
+
 const { width } = Dimensions.get('window');
 
 const SigninScreen = ({ navigation }) => {
 
+    const { loggedIn, setLoggedIn, name, setName } = useContext(UserContext)
     const backAction = () => {
         backClickCount == 1 ? BackHandler.exitApp() : _spring();
         return true;
@@ -41,7 +44,18 @@ const SigninScreen = ({ navigation }) => {
                     {emailInfo()}
                     {passwordInfo()}
                     {forgetPasswordText()}
-                    {signinButton()}
+                    {<TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => {
+                            navigation.push('Signup')
+                            setName('Dragos')
+                        }}
+                        style={styles.buttonStyle}
+                    >
+                        <Text style={{ ...Fonts.whiteColor22Bold, paddingVertical: Sizes.fixPadding + 5.0 }}>
+                            Sign In
+                        </Text>
+                    </TouchableOpacity>}
                     {orText()}
                     {socialMediaOIptions()}
                     {dontAccountInfo()}
@@ -123,20 +137,6 @@ const SigninScreen = ({ navigation }) => {
             <Text style={{ ...Fonts.lightGrayColor16Regular, marginHorizontal: Sizes.fixPadding * 2.0, textAlign: 'center' }}>
                 OR
             </Text>
-        )
-    }
-
-    function signinButton() {
-        return (
-            <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => { navigation.push('Signup') }}
-                style={styles.buttonStyle}
-            >
-                <Text style={{ ...Fonts.whiteColor22Bold, paddingVertical: Sizes.fixPadding + 5.0 }}>
-                    Sign In
-                </Text>
-            </TouchableOpacity>
         )
     }
 
