@@ -4,7 +4,7 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
 
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(true);
     const [name, setName] = useState('Cristi');
 
     const [state, dispatch] = useReducer(
