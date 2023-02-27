@@ -1,5 +1,13 @@
 import { useState, useEffect, createContext, useReducer, useMemo } from 'react';
 
+/**
+ * 
+ * 
+ * 
+ * 
+ * This is the place where we keep stuff like loggedIn, setLoggedIn, name, setName etc
+ * 
+ */
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
