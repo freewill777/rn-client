@@ -61,7 +61,7 @@ const MessageScreen = ({ navigation }) => {
                                 <View style={styles.activeSmallIndicatorStyle} />
                             </View>
                             <Text style={{ marginTop: Sizes.fixPadding - 5.0, ...Fonts.blackColor12Regular }}>
-                                {item.userProfileName} pula
+                                {item.userProfileName}
                             </Text>
                         </View>
                     )}
