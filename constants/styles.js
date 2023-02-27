@@ -12,12 +12,14 @@ export const Colors = {
     orangeColor: '#FFAC33',
 }
 
+const baseFont = 'Roboto'
+
 const FontStyles = {
-    regular: 'OpenSans_Regular',
-    medium: 'OpenSans_Medium',
-    semiBold: 'OpenSans_SemiBold',
-    bold: 'OpenSans_Bold',
-    extraBold: 'OpenSans_ExtraBold'
+    regular: baseFont + '_Regular',
+    medium: baseFont + '_Regular',
+    semiBold: baseFont + '_Light',
+    bold: baseFont + '_Medium',
+    extraBold: baseFont + '_Medium'
 }
 
 export const Fonts = {
