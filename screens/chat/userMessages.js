@@ -6,6 +6,24 @@ const userMessages = [
         messageTime: '10:48 am',
     },
     {
+        id: '1',
+        message: 'Buna ziua!',
+        isSender: false,
+        messageTime: '10:48 am',
+    },
+    {
+        id: '1',
+        message: 'Buna ziua!',
+        isSender: false,
+        messageTime: '10:48 am',
+    },
+    {
+        id: '1',
+        message: 'Buna ziua!',
+        isSender: false,
+        messageTime: '10:48 am',
+    },
+    {
         id: '2',
         messageType: 'images',
         images: [

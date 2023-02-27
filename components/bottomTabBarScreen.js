@@ -9,6 +9,7 @@ import MessageScreen from "../screens/message/messageScreen";
 import ProfileScreen from "../screens/profile/profileScreen";
 import { MaterialIcons } from '@expo/vector-icons';
 import { BottomBarIndexContext } from "./botomTabBarIndexContext";
+import CompetitorsScreen from "../screens/competitors/competitorsScreen";
 
 const BottomTabBarScreen = ({ navigation }) => {
 
@@ -46,12 +47,20 @@ const BottomTabBarScreen = ({ navigation }) => {
                         index == 4 ?
                             <MessageScreen navigation={navigation} />
                             :
-                            <ProfileScreen navigation={navigation} />
+                            index == 6 ?
+                                <CompetitorsScreen navigation={navigation} />
+                                :
+                                <ProfileScreen navigation={navigation} />
+
                 }
                 <View style={styles.bottomTabBarStyle}>
                     {bottomTabBarItem({
                         tabIndex: 1,
                         iconName: require('../assets/images/icons/home.png'),
+                    })}
+                    {bottomTabBarItem({
+                        tabIndex: 6,
+                        iconName: require('../assets/images/icons/selfi.png'),
                     })}
                     {bottomTabBarItem({
                         tabIndex: 2,
@@ -102,7 +111,7 @@ const BottomTabBarScreen = ({ navigation }) => {
                 </TouchableOpacity>
                 :
                 <TouchableOpacity
-                    activeOpacity={0.8}
+                    activeOpacity={0.7}
                     onPress={() => { tabIndex == index ? null : changeIndex(tabIndex) }}
                 >
                     <Image
@@ -166,7 +175,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         elevation: 3.0,
-        bottom: 25.0,
+        // bottom: 25.0,
         backgroundColor: Colors.primaryColor
     }
 })

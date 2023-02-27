@@ -150,8 +150,7 @@ const imagePosts = [
     },
 ];
 
-const UserProfileScreen = ({ navigation }) => {
-
+const UserProfileScreen = ({ navigation, route }) => {
     const [isFollow, setIsFollow] = useState(false);
     const [currentTab, setCurrentTab] = useState(0);
 
@@ -169,7 +168,7 @@ const UserProfileScreen = ({ navigation }) => {
                 {header()}
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {userPostsAndFollowersRelatedInfo()}
-                    {userInfo()}
+                    {userInfo(route)}
                     {followAndMessageButton()}
                     {tabs()}
                 </ScrollView>
@@ -347,7 +346,7 @@ const UserProfileScreen = ({ navigation }) => {
                     style={{ ...styles.buttonStyle, backgroundColor: isFollow ? Colors.whiteColor : Colors.primaryColor, }}
                 >
                     <Text numberOfLines={1} style={isFollow ? { ...Fonts.primaryColor18Bold } : { ...Fonts.whiteColor18Bold }}>
-                        {isFollow ? 'Following' : 'Follow'}
+                        {isFollow ? 'Abonat' : 'Abonare'}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -356,26 +355,35 @@ const UserProfileScreen = ({ navigation }) => {
                     style={{ ...styles.buttonStyle, backgroundColor: Colors.whiteColor, }}
                 >
                     <Text style={{ ...Fonts.primaryColor18Bold }}>
-                        Message
+                        Chat
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => { setIsFollow(!isFollow) }}
+                    style={{ ...styles.buttonStyle, backgroundColor: isFollow ? Colors.whiteColor : Colors.primaryColor, }}
+                >
+                    <Text numberOfLines={1} style={isFollow ? { ...Fonts.primaryColor18Bold } : { ...Fonts.whiteColor18Bold }}>
+                        Donare
                     </Text>
                 </TouchableOpacity>
             </View>
         )
     }
 
-    function userInfo() {
+    function userInfo(router) {
         const userStoryAvailable = true;
         return (
             <View style={{ marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
                     <View style={{ flex: 1, }}>
                         <Text numberOfLines={1} style={{ ...Fonts.blackColor18SemiBold }}>
-                            Tina Shah
+                            {router.params.item.userProfileName}
                         </Text>
                         <Text numberOfLines={1} style={{ ...Fonts.grayColor14Regular }}>
-                            Artist
+                            {router.params.item.userFullName}
                         </Text>
-                        <Text numberOfLines={1} style={{ ...Fonts.blackColor14Regular }}>
+                        {/* <Text numberOfLines={1} style={{ ...Fonts.blackColor14Regular }}>
                             Art + Prints + Workshops
                         </Text>
                         <Text numberOfLines={1}>
@@ -393,7 +401,7 @@ const UserProfileScreen = ({ navigation }) => {
                             <Text style={{ ...Fonts.blueColor14Regular }}>
                                 www.officialtinashah.com
                             </Text>
-                        </Text>
+                        </Text> */}
                     </View>
                     <TouchableOpacity
                         activeOpacity={0.8}
@@ -401,14 +409,14 @@ const UserProfileScreen = ({ navigation }) => {
                         style={{ ...styles.userImageWrapStyle, borderColor: userStoryAvailable ? Colors.primaryColor : Colors.lightGrayColor, }}
                     >
                         <Image
-                            source={require('../../assets/images/users/user11.png')}
+                            source={router.params.item.userProfilePic}
                             style={{ width: width / 4.35, height: width / 4.35, borderRadius: (width / 4.35) / 2.0 }}
                         />
                     </TouchableOpacity>
                 </View>
-                <Text style={{ ...Fonts.blackColor14Regular }}>
+                {/* <Text style={{ ...Fonts.blackColor14Regular }}>
                     Followed by Followed by alicia___ , isha.__ , officialjoyjain_ and 27 more
-                </Text>
+                </Text> */}
             </View>
         )
     }
@@ -456,9 +464,9 @@ const UserProfileScreen = ({ navigation }) => {
         return (
             <View style={styles.headerWrapStyle}>
                 <MaterialIcons name="arrow-back-ios" size={22} color={Colors.blackColor} onPress={() => navigation.pop()} />
-                <Text style={{ flex: 1, marginHorizontal: Sizes.fixPadding - 5.0, ...Fonts.blackColor20SemiBold }}>
+                {/* <Text style={{ flex: 1, marginHorizontal: Sizes.fixPadding - 5.0, ...Fonts.blackColor20SemiBold }}>
                     realtinashah
-                </Text>
+                </Text> */}
             </View>
         )
     }
