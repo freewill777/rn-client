@@ -97,6 +97,14 @@ const CustomDrawer = props => {
                     }
                 })}
                 {drawerOptionSort({
+                    icon: <MaterialIcons name="av-timer" size={22} color={Colors.blackColor} />,
+                    option: 'Donează',
+                    onPress: () => {
+                        props.navigation.closeDrawer()
+                        props.navigation.push('CompetitorsScreen')
+                    }
+                })}
+                {drawerOptionSort({
                     icon: <MaterialIcons name="notifications-none" size={22} color={Colors.blackColor} />,
                     option: 'Notifications',
                     onPress: () => {

@@ -56,28 +56,43 @@ const BottomTabBarScreen = ({ navigation }) => {
                 <View style={styles.bottomTabBarStyle}>
                     {bottomTabBarItem({
                         tabIndex: 1,
-                        iconName: require('../assets/images/icons/home.png'),
+                        iconName: 'home',
                     })}
-                    {bottomTabBarItem({
+                                        {bottomTabBarItem({
+                        tabIndex: 4,
+                        iconName: 'message',
+                    })}
+                    {/* {bottomTabBarItem({
                         tabIndex: 6,
                         iconName: require('../assets/images/icons/selfi.png'),
-                    })}
+                    })} */}
                     {bottomTabBarItem({
                         tabIndex: 2,
-                        iconName: require('../assets/images/icons/bell.png'),
+                        iconName: 'notifications',
                     })}
                     {bottomTabBarItem({
+                        // tab no 3 is the special + button
                         tabIndex: 3,
-                        iconName: require('../assets/images/icons/bell.png'),
                     })}
-                    {bottomTabBarItem({
-                        tabIndex: 4,
-                        iconName: require('../assets/images/icons/message.png'),
-                    })}
+
                     {bottomTabBarItem({
                         tabIndex: 5,
-                        iconName: require('../assets/images/icons/profile.png'),
+                        iconName: 'person',
                     })}
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => navigation.push('SearchDetail')}
+                    >
+                        <MaterialIcons name="search" size={28} color={Colors.grayColor} />
+
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => navigation.openDrawer()}
+                    >
+                        <MaterialIcons name="menu" size={28} color={Colors.grayColor} />
+
+                    </TouchableOpacity>
                 </View>
                 {exitInfo()}
             </View>
@@ -114,10 +129,11 @@ const BottomTabBarScreen = ({ navigation }) => {
                     activeOpacity={0.7}
                     onPress={() => { tabIndex == index ? null : changeIndex(tabIndex) }}
                 >
-                    <Image
+                    {/* <Image
                         source={iconName}
                         style={{ ...styles.iconStyle, tintColor: index == tabIndex ? Colors.blackColor : Colors.lightGrayColor }}
-                    />
+                    /> */}
+                    <MaterialIcons name={iconName} size={28} color={Colors.grayColor} />
                 </TouchableOpacity>
         )
     }

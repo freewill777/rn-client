@@ -41,6 +41,7 @@ import OnboardingScreen from './screens/onboarding/onboardingScreen';
 import SigninScreen from './screens/auth/signinScreen';
 import SignupScreen from './screens/auth/signupScreen';
 import VerificationScreen from './screens/auth/verificationScreen';
+import CompetitorsScreen from './screens/competitors/competitorsScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -117,6 +118,7 @@ export const AppShell = () => {
                 <Stack.Screen name="About" component={AboutScreen} />
                 <Stack.Screen name="Help" component={HelpScreen} />
                 <Stack.Screen name="HelpDetail" component={HelpDetailScreen} />
+                <Stack.Screen name="CompetitorsScreen" component={CompetitorsScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )

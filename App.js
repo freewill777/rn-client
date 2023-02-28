@@ -3,6 +3,7 @@ import 'react-native-gesture-handler';
 import { LogBox } from 'react-native';
 import * as Font from "expo-font";
 import { AppShell } from './Appshell';
+import { StatusBar } from 'expo-status-bar';
 
 import { BottomBarIndexProvider } from './components/botomTabBarIndexContext';
 import { UserProvider } from './UserProvider';
@@ -19,6 +20,7 @@ const App = () => {
                 Roboto_Medium: require("./assets/fonts/Roboto-Medium.ttf"),
                 Roboto_Bold: require("./assets/fonts/Roboto-Bold.ttf"),
                 Lato_Light: require("./assets/fonts/Lato-Light.ttf"),
+                Oswald_Bold: require("./assets/fonts/Oswald-Bold.ttf"),
                 Lato_Regular: require("./assets/fonts/Lato-Regular.ttf"),
                 Lato_Medium: require("./assets/fonts/Lato-Regular.ttf"),
                 Lato_Bold: require("./assets/fonts/Lato-Bold.ttf"),
@@ -33,6 +35,7 @@ const App = () => {
     })
     return (
         <SocketProvider>
+            <StatusBar style="dark" />
             <BottomBarIndexProvider>
                 <UserProvider>
                     <AppShell>

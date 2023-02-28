@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native'
-import { StatusBar } from 'expo-status-bar';
 
 import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialIcons } from '@expo/vector-icons';
@@ -116,12 +115,10 @@ const followRequestsList = [
 
 
 const CompetitorsScreen = ({ navigation }) => {
-    <StatusBar style="dark" />
     const [followRequests, setFollowRequests] = useState(followRequestsList);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
-            <StatusBar style="dark" />
             <View style={{ flex: 1, }}>
                 <Header />
                 <View style={{ backgroundColor: Colors.extraLightGrayColor, height: 2 }} />
@@ -193,6 +190,7 @@ const CompetitorsScreen = ({ navigation }) => {
                 <Text style={{ flex: 1, marginHorizontal: Sizes.fixPadding - 5.0, ...Fonts.blackColor20SemiBold }}>
                     Competitori
                 </Text>
+                <MaterialIcons name="arrow-back" size={22} color={Colors.blackColor} onPress={() => { navigation.pop(); }} />
             </View>
         )
     }

@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useMemo } from "react";
 import {
     StyleSheet,
     Text,
@@ -9,283 +9,26 @@ import {
     Dimensions,
     FlatList,
     TouchableOpacity,
+    TextInput
 } from "react-native";
-import { StatusBar } from 'expo-status-bar';
 
 import { Colors, Fonts, Sizes } from "../../constants/styles";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { SwipeListView } from "react-native-swipe-list-view";
+import { ButtonGroup } from '@rneui/themed'
 
 import { UserContext } from "../../UserProvider";
+import { FontStyles } from "../../constants/styles";
+import { notifications, todaysPostsList } from "./data";
 
 const { width, height } = Dimensions.get("window");
-const notifications = [
-    {
-        key: "1",
-        type: "following",
-        userProfilePic: require("../../assets/images/users/user12.png"),
-        userName: "Jimmy Nislon",
-        notificationTime: "3 minutes ago",
-    },
-    {
-        key: "2",
-        type: "likeMorePhotos",
-        userProfilePic: require("../../assets/images/users/user2.png"),
-        userName: "Alicia Sierra",
-        likedPohotos: [
-            {
-                id: "1",
-                photo: require("../../assets/images/posts/post6.png"),
-            },
-            {
-                id: "2",
-                photo: require("../../assets/images/posts/post7.png"),
-            },
-            {
-                id: "3",
-                photo: require("../../assets/images/posts/post8.png"),
-            },
-        ],
-        notificationTime: "5 minutes ago",
-    },
-    {
-        key: "3",
-        type: "likeOnePhoto",
-        userProfilePic: require("../../assets/images/users/user30.png"),
-        userName: "Isha Khatri",
-        likedPhoto: require("../../assets/images/gallery/gallery1.png"),
-        notificationTime: "15 minutes ago",
-    },
-    {
-        key: "4",
-        id: "1",
-        userProfilePic: require("../../assets/images/users/user37.png"),
-        userName: "Event 0",
-        userDetail: "Predeal, Brasov",
-        aboutPost:
-            "Nu pierdeti ocazia de a fi martori la viitorii campioni de baschet in acțiune, la turneul pentru juniori din Predeal!",
-        postLikes: "10k",
-        postComments: "100",
-        postShares: "35",
-        postImage: require("../../assets/images/contests/basketball.jpg"),
-        postLike: true,
-        type: "post",
-    },
-    {
-        key: "5",
-        type: "following",
-        userProfilePic: require("../../assets/images/users/user30.png"),
-        userName: "Isha Khatri",
-        notificationTime: "20 minutes ago",
-    },
-    {
-        key: "6",
-        type: "mention",
-        userProfilePic: require("../../assets/images/users/user3.png"),
-        mentionPhoto: require("../../assets/images/gallery/gallery1.png"),
-        userName: "dennyjohn.",
-        mantionUserName: "@samanthaofficial",
-        comment: "very nice...",
-        notificationTime: "35 minutes ago",
-    },
-    {
-        key: "7",
-        type: "following",
-        userProfilePic: require("../../assets/images/users/user29.png"),
-        userName: "Tisha Jain",
-        notificationTime: "40 minutes ago",
-    },
-    {
-        key: "8",
-        type: "likeMorePhotos",
-        userProfilePic: require("../../assets/images/users/user4.png"),
-        userName: "Smiti Khan",
-        likedPohotos: [
-            {
-                id: "1",
-                photo: require("../../assets/images/publicPosts/post23.png"),
-            },
-            {
-                id: "2",
-                photo: require("../../assets/images/publicPosts/post24.png"),
-            },
-            {
-                id: "3",
-                photo: require("../../assets/images/publicPosts/post20.png"),
-            },
-            {
-                id: "4",
-                photo: require("../../assets/images/publicPosts/post11.png"),
-            },
-        ],
-        notificationTime: "50 minutes ago",
-    },
-    {
-        key: "9",
-        type: "likeOnePhoto",
-        userProfilePic: require("../../assets/images/users/user41.png"),
-        userName: "Sonali Mishra",
-        likedPhoto: require("../../assets/images/gallery/gallery5.png"),
-        notificationTime: "15 minutes ago",
-    },
-    {
-        key: "10",
-        type: "mention",
-        userProfilePic: require("../../assets/images/users/user3.png"),
-        mentionPhoto: require("../../assets/images/gallery/gallery1.png"),
-        userName: "dennyjohn.",
-        mantionUserName: "@samanthaofficial",
-        comment: "very nice...",
-        notificationTime: "2 days ago",
-    },
-    {
-        key: "11",
-        type: "likeByMore",
-        userProfilePics: [
-            {
-                id: "1",
-                userProfilePic: require("../../assets/images/users/user41.png"),
-            },
-            {
-                id: "2",
-                userProfilePic: require("../../assets/images/users/user42.png"),
-            },
-        ],
-        userProfileNames: ["Sonali Mishra", "Roy Ali", "", "", "", ""],
-        likedPhoto: require("../../assets/images/posts/post10.png"),
-        notificationTime: "2 days ago",
-    },
-    {
-        key: "12",
-        type: "seeOldPost",
-        postTime: "1 year ago",
-        seeTime: "today",
-        post: require("../../assets/images/gallery/gallery5.png"),
-        notificationTime: "3 days ago",
-    },
-    {
-        key: "13",
-        type: "likeByMore",
-        userProfilePics: [
-            {
-                id: "1",
-                userProfilePic: require("../../assets/images/users/user41.png"),
-            },
-            {
-                id: "2",
-                userProfilePic: require("../../assets/images/users/user42.png"),
-            },
-        ],
-        userProfileNames: ["Sonali Mishra", "Roy Ali", "", "", "", ""],
-        likedPhoto: require("../../assets/images/posts/post10.png"),
-        notificationTime: "2 days ago",
-    },
-    {
-        key: "14",
-        type: "mention",
-        userProfilePic: require("../../assets/images/users/user3.png"),
-        mentionPhoto: require("../../assets/images/gallery/gallery1.png"),
-        userName: "dennyjohn.",
-        mantionUserName: "@samanthaofficial",
-        comment: "very nice...",
-        notificationTime: "3 days ago",
-    },
-    {
-        key: "15",
-        type: "likeMorePhotos",
-        userProfilePic: require("../../assets/images/users/user4.png"),
-        userName: "Smiti Khan",
-        likedPohotos: [
-            {
-                id: "1",
-                photo: require("../../assets/images/publicPosts/post23.png"),
-            },
-            {
-                id: "2",
-                photo: require("../../assets/images/publicPosts/post24.png"),
-            },
-            {
-                id: "3",
-                photo: require("../../assets/images/publicPosts/post20.png"),
-            },
-            {
-                id: "4",
-                photo: require("../../assets/images/publicPosts/post11.png"),
-            },
-        ],
-        notificationTime: "50 minutes ago",
-    },
-];
-
-const todaysPostsList = [
-    {
-        id: "1",
-        userProfilePic: require("../../assets/images/users/user37.png"),
-        userName: "Event 0",
-        userDetail: "Predeal, Brasov",
-        aboutPost:
-            "Nu pierdeti ocazia de a fi martori la viitorii campioni de baschet in acțiune, la turneul pentru juniori din Predeal!",
-        postLikes: "10k",
-        postComments: "100",
-        postShares: "35",
-        postImage: require("../../assets/images/contests/basketball.jpg"),
-        postLike: true,
-    },
-    {
-        id: "2",
-        userProfilePic: require("../../assets/images/users/user26.png"),
-        userName: "Event 1",
-        userDetail: "Predeal, Brasov",
-        aboutPost:
-            "Vino sa vezi talentele viitorului in acțiune la turneul de fotbal pentru juniori din Predeal!",
-        postLikes: "10k",
-        postComments: "100",
-        postShares: "35",
-        postImage: require("../../assets/images/contests/football.jpg"),
-        postLike: false,
-    },
-];
 
 const FeedScreen = ({ navigation }) => {
     const [todaysPosts, setTodaysPosts] = useState(todaysPostsList);
 
-    const [listData, setListData] = useState(notifications);
-    const [showSnackBar, setShowSnackBar] = useState(false);
-
-    const animationIsRunning = useRef(false);
-
-    const onSwipeValueChange = (swipeData) => {
-        const { key, value } = swipeData;
-        if (value > width || (value < -width && !animationIsRunning.current)) {
-            animationIsRunning.current = true;
-            Animated.timing(rowTranslateAnimatedValues[key], {
-                toValue: 0,
-                duration: 200,
-                useNativeDriver: false,
-            }).start(() => {
-                const newData = [...listData];
-                const prevIndex = listData.findIndex((item) => item.key === key);
-                newData.splice(prevIndex, 1);
-                setListData(newData);
-                setShowSnackBar(true);
-                animationIsRunning.current = false;
-            });
-        }
-    };
+    const [searching, setSearching] = useState(false);
 
     const renderItem = (data) => (
-        // <Animated.View
-        //     style={[
-        //         {
-        //             height: rowTranslateAnimatedValues[
-        //                 data.item.key
-        //             ].interpolate({
-        //                 inputRange: ['0%', '100%'],
-        //                 outputRange: ["0%", "100%"],
-        //             }),
-        //         },
-        //     ]}
-        // >
         <View style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
             <View style={{ marginHorizontal: Sizes.fixPadding * 2.0 }}>
                 {data.item.type == "following" ? (
@@ -676,31 +419,61 @@ const FeedScreen = ({ navigation }) => {
         </View>
         // </Animated.View>
     );
+    const buttons = ['User', 'Sportiv', 'Club', 'Business']
     const { name } = useContext(UserContext)
+    const [selectedIndexes, setSelectedIndexes] = useState([]);
+    const selectedFilters = useMemo(() => selectedIndexes.map(index => buttons[index]), [selectedIndexes]);
+    const listData = useMemo(() => notifications.filter(notification => selectedFilters.length > 0 ? selectedFilters.includes(notification.itemType) : true));
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
-            <StatusBar style="dark" />
             <View style={{ flex: 1 }}>
                 {<View style={{ ...styles.headerWrapStyle, flexDirection: "row" }}>
                     <View style={{ width: '50%', flexDirection: "row", alignItems: 'center' }}>
                         <Image
                             source={require("../../assets/images/homeAppLogo.png")}
-                            style={{ width: 26.0, height: 26.0, resizeMode: "contain", marginEnd: 10 }}
+                            style={{ width: 32.0, height: 32.0, resizeMode: "contain", marginEnd: 10 }}
                         />
                         <Text>
-                            <Text style={{ ...Fonts.primaryColor12ExtraBold }}>React { }</Text>
-                            <Text style={{ ...Fonts.secondaryColor12ExtraBold }}>{name}</Text>
+                            <Text style={{ ...Fonts.primaryColor20Bold, fontFamily: FontStyles.accentBold, }}>Existăm</Text>
+                            <Text style={{ ...Fonts.secondaryColor12ExtraBold }}>.ro</Text>
                         </Text>
                     </View>
-                    <View style={{ alignItems: "center", justifyContent: 'flex-end', width: '50%', flexDirection: "row" }}>
-                        <MaterialIcons
-                            name="search"
-                            size={24}
-                            color={Colors.blackColor}
-                            onPress={() => navigation.push("Search")}
-                        />
-                    </View>
+                    {searching ? (
+                        <View style={{ alignItems: "center", justifyContent: 'flex-end', width: '50%', flexDirection: "row" }}>
+                            <TextInput
+                                placeholder='Căutare...'
+                                style={{ ...styles.searchFieldStyle, marginRight: 8 }}
+                                placeholderTextColor={Colors.grayColor}
+                                cursorColor={Colors.primaryColor}
+                            />
+                            <MaterialIcons onPress={() => setSearching(!searching)} name='search' color={Colors.blackColor} size={28}
+                                style={{ marginRight: -6 }}
+                            />
+                        </View>) : (
+                        <View style={{ alignItems: "center", justifyContent: 'flex-end', width: '50%', flexDirection: "row" }}>
+                            <MaterialIcons
+                                name="search"
+                                size={28}
+                                color={Colors.grayColor}
+                                onPress={() => setSearching(!searching)}
+                            />
+                        </View>
+                    )}
                 </View >}
+                {searching && <>
+                    <ButtonGroup
+                        buttons={buttons}
+                        selectMultiple
+                        selectedIndexes={selectedIndexes}
+                        onPress={(value) => {
+                            setSelectedIndexes(value);
+                        }}
+                        containerStyle={{ marginBottom: 10 }}
+                        buttonStyle={{ backgroundColor: Colors.whiteColor }}
+                        selectedButtonStyle={{ backgroundColor: Colors.primaryColor }}
+                    />
+                </>}
                 <FlatList
                     ListHeaderComponent={
                         <>
@@ -761,7 +534,7 @@ const FeedScreen = ({ navigation }) => {
                     renderHiddenItem={renderHiddenItem}
                     rightOpenValue={-width}
                     leftOpenValue={width}
-                    onSwipeValueChange={onSwipeValueChange}
+                    // onSwipeValueChange={onSwipeValueChange}
                     useNativeDriver={false}
                     scrollEnabled={false}
                 />

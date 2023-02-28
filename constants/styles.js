@@ -14,12 +14,13 @@ export const Colors = {
 
 const baseFont = 'Roboto'
 
-const FontStyles = {
+export const FontStyles = {
     regular: baseFont + '_Regular',
     medium: baseFont + '_Regular',
     semiBold: baseFont + '_Light',
     bold: baseFont + '_Medium',
-    extraBold: baseFont + '_Medium'
+    extraBold: baseFont + '_Medium',
+    accentBold: 'Oswald_Bold'
 }
 
 export const Fonts = {

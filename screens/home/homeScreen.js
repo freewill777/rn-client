@@ -486,10 +486,10 @@ const HomeScreen = ({ navigation }) => {
                     />
                     <Text>
                         <Text style={{ ...Fonts.primaryColor12ExtraBold }}>
-                            React { }
+                            Existăm
                         </Text>
                         <Text style={{ ...Fonts.secondaryColor12ExtraBold }}>
-                            Social
+                            .ro
                         </Text>
                     </Text>
                 </View>
