@@ -240,65 +240,93 @@ const NotificationScreen = ({ navigation }) => {
         //         },
         //     ]}
         // >
-            <View style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
-                <View style={{ marginHorizontal: Sizes.fixPadding * 2.0, }}>
-                    {
-                        data.item.type == 'following'
+        <View style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
+            <View style={{ marginHorizontal: Sizes.fixPadding * 2.0, }}>
+                {
+                    data.item.type == 'following'
+                        ?
+                        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                            <Image
+                                source={data.item.userProfilePic}
+                                style={styles.userProfilePicStyle}
+                            />
+                            <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding }}>
+                                <Text style={{ ...Fonts.blackColor14SemiBold }}>
+                                    {data.item.userName} a început să te urmărească
+                                </Text>
+                                <Text style={{ ...Fonts.grayColor12Regular }}>
+                                    {data.item.notificationTime}
+                                </Text>
+                            </View>
+                        </View>
+                        :
+                        data.item.type == 'likeMorePhotos'
                             ?
-                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                            <View style={{ flexDirection: 'row', }}>
                                 <Image
                                     source={data.item.userProfilePic}
                                     style={styles.userProfilePicStyle}
                                 />
-                                <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding }}>
-                                    <Text style={{ ...Fonts.blackColor14SemiBold }}>
-                                        {data.item.userName} started following you
+                                <View style={{ flex: 1, }}>
+                                    <Text style={{ marginHorizontal: Sizes.fixPadding, ...Fonts.blackColor14SemiBold }}>
+                                        {data.item.userName} a apreciat {data.item.likedPohotos.length} fotografii
                                     </Text>
-                                    <Text style={{ ...Fonts.grayColor12Regular }}>
+                                    <View style={{ marginHorizontal: Sizes.fixPadding - 5.0, flexDirection: 'row' }}>
+                                        {
+                                            data.item.likedPohotos.length >= 4
+                                                ?
+                                                data.item.likedPohotos.slice(0, 4).map((item) => (
+                                                    <Image
+                                                        key={`${item.id}`}
+                                                        source={item.photo}
+                                                        style={{ ...styles.likedPhotosStyle, width: width / 6.5, height: width / 6.5, }}
+                                                    />
+                                                ))
+                                                :
+                                                data.item.likedPohotos.map((item) => (
+                                                    <Image
+                                                        key={`${item.id}`}
+                                                        source={item.photo}
+                                                        style={{ ...styles.likedPhotosStyle, width: width / 5.0, height: width / 5.0, }}
+                                                    />
+                                                ))
+                                        }
+                                    </View>
+                                    <Text style={{ marginHorizontal: Sizes.fixPadding, ...Fonts.grayColor12Regular }}>
                                         {data.item.notificationTime}
                                     </Text>
                                 </View>
                             </View>
                             :
-                            data.item.type == 'likeMorePhotos'
+                            data.item.type == 'likeOnePhoto'
                                 ?
-                                <View style={{ flexDirection: 'row', }}>
-                                    <Image
-                                        source={data.item.userProfilePic}
-                                        style={styles.userProfilePicStyle}
-                                    />
-                                    <View style={{ flex: 1, }}>
-                                        <Text style={{ marginHorizontal: Sizes.fixPadding, ...Fonts.blackColor14SemiBold }}>
-                                            {data.item.userName} liked {data.item.likedPohotos.length} photos
-                                        </Text>
-                                        <View style={{ marginHorizontal: Sizes.fixPadding - 5.0, flexDirection: 'row' }}>
-                                            {
-                                                data.item.likedPohotos.length >= 4
-                                                    ?
-                                                    data.item.likedPohotos.slice(0, 4).map((item) => (
-                                                        <Image
-                                                            key={`${item.id}`}
-                                                            source={item.photo}
-                                                            style={{ ...styles.likedPhotosStyle, width: width / 6.5, height: width / 6.5, }}
-                                                        />
-                                                    ))
-                                                    :
-                                                    data.item.likedPohotos.map((item) => (
-                                                        <Image
-                                                            key={`${item.id}`}
-                                                            source={item.photo}
-                                                            style={{ ...styles.likedPhotosStyle, width: width / 5.0, height: width / 5.0, }}
-                                                        />
-                                                    ))
-                                            }
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                                    <View style={{ flex: 1, flexDirection: 'row', }}>
+                                        <Image
+                                            source={data.item.userProfilePic}
+                                            style={styles.userProfilePicStyle}
+                                        />
+                                        <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding }}>
+                                            <Text style={{ ...Fonts.blackColor14SemiBold }}>
+                                                {data.item.userName} a apreciat fotografia ta
+                                            </Text>
+                                            <Text style={{ ...Fonts.grayColor12Regular }}>
+                                                {data.item.notificationTime}
+                                            </Text>
                                         </View>
-                                        <Text style={{ marginHorizontal: Sizes.fixPadding, ...Fonts.grayColor12Regular }}>
-                                            {data.item.notificationTime}
-                                        </Text>
                                     </View>
+                                    <TouchableOpacity
+                                        activeOpacity={0.8}
+                                        onPress={() => { navigation.push('Posts') }}
+                                    >
+                                        <Image
+                                            source={data.item.likedPhoto}
+                                            style={{ width: width / 6.0, height: width / 6.0, borderRadius: Sizes.fixPadding - 5.0 }}
+                                        />
+                                    </TouchableOpacity>
                                 </View>
                                 :
-                                data.item.type == 'likeOnePhoto'
+                                data.item.type == 'mention'
                                     ?
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
                                         <View style={{ flex: 1, flexDirection: 'row', }}>
@@ -307,8 +335,19 @@ const NotificationScreen = ({ navigation }) => {
                                                 style={styles.userProfilePicStyle}
                                             />
                                             <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding }}>
-                                                <Text style={{ ...Fonts.blackColor14SemiBold }}>
-                                                    {data.item.userName} liked your photo
+                                                <Text>
+                                                    <Text style={{ ...Fonts.blackColor14Bold }}>
+                                                        {data.item.userName} { }
+                                                    </Text>
+                                                    <Text style={{ ...Fonts.blackColor14SemiBold }}>
+                                                        te-a menționat aici :
+                                                    </Text>
+                                                    <Text style={{ ...Fonts.blueColor14SemiBold }}>
+                                                        { } {data.item.mantionUserName} { }
+                                                    </Text>
+                                                    <Text style={{ ...Fonts.blackColor14SemiBold }}>
+                                                        {data.item.comment}
+                                                    </Text>
                                                 </Text>
                                                 <Text style={{ ...Fonts.grayColor12Regular }}>
                                                     {data.item.notificationTime}
@@ -317,37 +356,32 @@ const NotificationScreen = ({ navigation }) => {
                                         </View>
                                         <TouchableOpacity
                                             activeOpacity={0.8}
-                                            onPress={() => { navigation.push('Posts') }}
+                                            onPress={() => { navigation.push('Comments') }}
                                         >
                                             <Image
-                                                source={data.item.likedPhoto}
+                                                source={data.item.mentionPhoto}
                                                 style={{ width: width / 6.0, height: width / 6.0, borderRadius: Sizes.fixPadding - 5.0 }}
                                             />
                                         </TouchableOpacity>
                                     </View>
                                     :
-                                    data.item.type == 'mention'
+                                    data.item.type == 'likeByMore'
                                         ?
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
                                             <View style={{ flex: 1, flexDirection: 'row', }}>
-                                                <Image
-                                                    source={data.item.userProfilePic}
-                                                    style={styles.userProfilePicStyle}
-                                                />
+                                                <View style={{ width: 50.0 }}>
+                                                    <Image
+                                                        source={data.item.userProfilePics[0].userProfilePic}
+                                                        style={{ width: 38.0, height: 38.0, borderRadius: 19.0, }}
+                                                    />
+                                                    <Image
+                                                        source={data.item.userProfilePics[1].userProfilePic}
+                                                        style={{ width: 38.0, height: 38.0, borderRadius: 19.0, position: 'absolute', right: 0.0, bottom: 2.0, }}
+                                                    />
+                                                </View>
                                                 <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding }}>
-                                                    <Text>
-                                                        <Text style={{ ...Fonts.blackColor14Bold }}>
-                                                            {data.item.userName} { }
-                                                        </Text>
-                                                        <Text style={{ ...Fonts.blackColor14SemiBold }}>
-                                                            mentioned you in a commented :
-                                                        </Text>
-                                                        <Text style={{ ...Fonts.blueColor14SemiBold }}>
-                                                            { } {data.item.mantionUserName} { }
-                                                        </Text>
-                                                        <Text style={{ ...Fonts.blackColor14SemiBold }}>
-                                                            {data.item.comment}
-                                                        </Text>
+                                                    <Text style={{ ...Fonts.blackColor14SemiBold }}>
+                                                        {data.item.userProfileNames[0]} , {data.item.userProfileNames[1]} și {data.item.userProfileNames.length - 2} alții au apreciat fotografia ta
                                                     </Text>
                                                     <Text style={{ ...Fonts.grayColor12Regular }}>
                                                         {data.item.notificationTime}
@@ -356,32 +390,25 @@ const NotificationScreen = ({ navigation }) => {
                                             </View>
                                             <TouchableOpacity
                                                 activeOpacity={0.8}
-                                                onPress={() => { navigation.push('Comments') }}
+                                                onPress={() => { navigation.push('Posts') }}
                                             >
                                                 <Image
-                                                    source={data.item.mentionPhoto}
+                                                    source={data.item.likedPhoto}
                                                     style={{ width: width / 6.0, height: width / 6.0, borderRadius: Sizes.fixPadding - 5.0 }}
                                                 />
                                             </TouchableOpacity>
                                         </View>
                                         :
-                                        data.item.type == 'likeByMore'
+                                        data.item.type == 'seeOldPost'
                                             ?
                                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
                                                 <View style={{ flex: 1, flexDirection: 'row', }}>
-                                                    <View style={{ width: 50.0 }}>
-                                                        <Image
-                                                            source={data.item.userProfilePics[0].userProfilePic}
-                                                            style={{ width: 38.0, height: 38.0, borderRadius: 19.0, }}
-                                                        />
-                                                        <Image
-                                                            source={data.item.userProfilePics[1].userProfilePic}
-                                                            style={{ width: 38.0, height: 38.0, borderRadius: 19.0, position: 'absolute', right: 0.0, bottom: 2.0, }}
-                                                        />
+                                                    <View style={styles.historyIconWrapStyle}>
+                                                        <MaterialIcons name="history" size={24} color={Colors.primaryColor} />
                                                     </View>
                                                     <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding }}>
                                                         <Text style={{ ...Fonts.blackColor14SemiBold }}>
-                                                            {data.item.userProfileNames[0]} , {data.item.userProfileNames[1]} and {data.item.userProfileNames.length - 2} others liked your photo
+                                                            See your post from {data.item.postTime} {data.item.seeTime}
                                                         </Text>
                                                         <Text style={{ ...Fonts.grayColor12Regular }}>
                                                             {data.item.notificationTime}
@@ -393,44 +420,17 @@ const NotificationScreen = ({ navigation }) => {
                                                     onPress={() => { navigation.push('Posts') }}
                                                 >
                                                     <Image
-                                                        source={data.item.likedPhoto}
+                                                        source={data.item.post}
                                                         style={{ width: width / 6.0, height: width / 6.0, borderRadius: Sizes.fixPadding - 5.0 }}
                                                     />
                                                 </TouchableOpacity>
                                             </View>
                                             :
-                                            data.item.type == 'seeOldPost'
-                                                ?
-                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                                                    <View style={{ flex: 1, flexDirection: 'row', }}>
-                                                        <View style={styles.historyIconWrapStyle}>
-                                                            <MaterialIcons name="history" size={24} color={Colors.primaryColor} />
-                                                        </View>
-                                                        <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding }}>
-                                                            <Text style={{ ...Fonts.blackColor14SemiBold }}>
-                                                                See your post from {data.item.postTime} {data.item.seeTime}
-                                                            </Text>
-                                                            <Text style={{ ...Fonts.grayColor12Regular }}>
-                                                                {data.item.notificationTime}
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                    <TouchableOpacity
-                                                        activeOpacity={0.8}
-                                                        onPress={() => { navigation.push('Posts') }}
-                                                    >
-                                                        <Image
-                                                            source={data.item.post}
-                                                            style={{ width: width / 6.0, height: width / 6.0, borderRadius: Sizes.fixPadding - 5.0 }}
-                                                        />
-                                                    </TouchableOpacity>
-                                                </View>
-                                                :
-                                                null
-                    }
-                    <View style={{ backgroundColor: Colors.extraLightGrayColor, height: 1.0, marginVertical: Sizes.fixPadding, }} />
-                </View>
+                                            null
+                }
+                <View style={{ backgroundColor: Colors.extraLightGrayColor, height: 1.0, marginVertical: Sizes.fixPadding, }} />
             </View>
+        </View>
         // </Animated.View>
     );
 
@@ -524,10 +524,10 @@ const NotificationScreen = ({ navigation }) => {
                 </View>
                 <View style={{ flex: 1, marginLeft: Sizes.fixPadding + 5.0 }}>
                     <Text style={{ ...Fonts.blackColor18SemiBold }}>
-                        Follow Request
+                        Cereri de prietenie
                     </Text>
                     <Text style={{ ...Fonts.grayColor14Regular }}>
-                        Approve or ignore requests
+                        Aprobă sau respinge cererile de prietenie
                     </Text>
                 </View>
             </TouchableOpacity>

@@ -40,7 +40,7 @@ const FeedScreen = ({ navigation }) => {
                         />
                         <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding }}>
                             <Text style={{ ...Fonts.blackColor14SemiBold }}>
-                                {data.item.userName} started following you
+                                {data.item.userName} a început să te urmărească
                             </Text>
                             <Text style={{ ...Fonts.grayColor12Regular }}>
                                 {data.item.notificationTime}
@@ -60,8 +60,8 @@ const FeedScreen = ({ navigation }) => {
                                     ...Fonts.blackColor14SemiBold,
                                 }}
                             >
-                                {data.item.userName} liked {data.item.likedPohotos.length}{" "}
-                                photos
+                                {data.item.userName} a apreciat {data.item.likedPohotos.length}{" "}
+                                fotografii
                             </Text>
                             <View
                                 style={{
@@ -114,7 +114,7 @@ const FeedScreen = ({ navigation }) => {
                             />
                             <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding }}>
                                 <Text style={{ ...Fonts.blackColor14SemiBold }}>
-                                    {data.item.userName} liked your photo
+                                    {data.item.userName} a apreciat fotografia ta
                                 </Text>
                                 <Text style={{ ...Fonts.grayColor12Regular }}>
                                     {data.item.notificationTime}
@@ -152,7 +152,7 @@ const FeedScreen = ({ navigation }) => {
                                         {data.item.userName} { }
                                     </Text>
                                     <Text style={{ ...Fonts.blackColor14SemiBold }}>
-                                        mentioned you in a commented :
+                                        te-a menționat aici:
                                     </Text>
                                     <Text style={{ ...Fonts.blueColor14SemiBold }}>
                                         { } {data.item.mantionUserName} { }
@@ -208,8 +208,7 @@ const FeedScreen = ({ navigation }) => {
                                 <Text style={{ ...Fonts.blackColor14SemiBold }}>
                                     {data.item.userProfileNames[0]} ,{" "}
                                     {data.item.userProfileNames[1]} and{" "}
-                                    {data.item.userProfileNames.length - 2} others liked your
-                                    photo
+                                    {data.item.userProfileNames.length - 2} alții au apreciat fotografia ta
                                 </Text>
                                 <Text style={{ ...Fonts.grayColor12Regular }}>
                                     {data.item.notificationTime}
@@ -246,7 +245,7 @@ const FeedScreen = ({ navigation }) => {
                             </View>
                             <View style={{ flex: 1, marginHorizontal: Sizes.fixPadding }}>
                                 <Text style={{ ...Fonts.blackColor14SemiBold }}>
-                                    See your post from {data.item.postTime} {data.item.seeTime}
+                                    Vezi postările mai vechi din data de {data.item.postTime} {data.item.seeTime}
                                 </Text>
                                 <Text style={{ ...Fonts.grayColor12Regular }}>
                                     {data.item.notificationTime}
@@ -450,7 +449,11 @@ const FeedScreen = ({ navigation }) => {
                                 onChangeText={onChangeText}
                                 value={text}
                             />
-                            <MaterialIcons onPress={() => setSearching(!searching)} name='search' color={Colors.blackColor} size={28}
+                            <MaterialIcons
+                                onPress={() => setSearching(!searching)}
+                                name='search'
+                                color={Colors.blackColor}
+                                size={28}
                                 style={{ marginRight: -6 }}
                             />
                         </View>) : (
@@ -460,6 +463,7 @@ const FeedScreen = ({ navigation }) => {
                                 size={28}
                                 color={Colors.grayColor}
                                 onPress={() => setSearching(!searching)}
+                                style={{ marginRight: -6 }}
                             />
                         </View>
                     )}

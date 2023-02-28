@@ -4,7 +4,7 @@ export const notifications = [
         itemType: 'User',
         type: "following",
         userProfilePic: require("../../assets/images/users/user12.png"),
-        userName: "Jimmy Nislon",
+        userName: "Stefan Vasilescu",
         notificationTime: "3 minutes ago",
     },
     {
@@ -12,7 +12,7 @@ export const notifications = [
         itemType: 'Sportiv',
         type: "likeMorePhotos",
         userProfilePic: require("../../assets/images/users/user2.png"),
-        userName: "Alicia Sierra",
+        userName: "Ana Maria Dumitrescu",
         likedPohotos: [
             {
                 id: "1",
@@ -34,7 +34,7 @@ export const notifications = [
         itemType: 'User',
         type: "likeOnePhoto",
         userProfilePic: require("../../assets/images/users/user30.png"),
-        userName: "Isha Khatri",
+        userName: "Alexandru Ionescu",
         likedPhoto: require("../../assets/images/gallery/gallery1.png"),
         notificationTime: "15 minutes ago",
     },
@@ -59,7 +59,7 @@ export const notifications = [
         type: "following",
         itemType: 'User',
         userProfilePic: require("../../assets/images/users/user30.png"),
-        userName: "Isha Khatri",
+        userName: "Andrei Popescu",
         notificationTime: "20 minutes ago",
     },
     {
@@ -68,9 +68,9 @@ export const notifications = [
         itemType: 'Business',
         userProfilePic: require("../../assets/images/users/user3.png"),
         mentionPhoto: require("../../assets/images/gallery/gallery1.png"),
-        userName: "dennyjohn.",
-        mantionUserName: "@samanthaofficial",
-        comment: "very nice...",
+        userName: "@mariaVasilescu",
+        mantionUserName: "@mariaVasilescu",
+        comment: "foarte frumos...",
         notificationTime: "35 minutes ago",
     },
     {
@@ -78,7 +78,7 @@ export const notifications = [
         type: "following",
         itemType: 'User',
         userProfilePic: require("../../assets/images/users/user29.png"),
-        userName: "Tisha Jain",
+        userName: "Ionut Petrescu",
         notificationTime: "40 minutes ago",
     },
     {
@@ -86,7 +86,7 @@ export const notifications = [
         itemType: 'Business',
         type: "likeMorePhotos",
         userProfilePic: require("../../assets/images/users/user4.png"),
-        userName: "Smiti Khan",
+        userName: "Andrei Popescu",
         likedPohotos: [
             {
                 id: "1",
@@ -112,7 +112,7 @@ export const notifications = [
         itemType: 'Club',
         type: "likeOnePhoto",
         userProfilePic: require("../../assets/images/users/user41.png"),
-        userName: "Sonali Mishra",
+        userName: "Alexandru Ionescu",
         likedPhoto: require("../../assets/images/gallery/gallery5.png"),
         notificationTime: "15 minutes ago",
     },
@@ -122,10 +122,10 @@ export const notifications = [
         type: "mention",
         userProfilePic: require("../../assets/images/users/user3.png"),
         mentionPhoto: require("../../assets/images/gallery/gallery1.png"),
-        userName: "dennyjohn.",
-        mantionUserName: "@samanthaofficial",
-        comment: "very nice...",
-        notificationTime: "2 days ago",
+        userName: "alexionescu.",
+        mantionUserName: "@alexionescu",
+        comment: "foarte frumos...",
+        notificationTime: "acum 2 zile",
     },
     {
         key: "11",
@@ -141,18 +141,18 @@ export const notifications = [
                 userProfilePic: require("../../assets/images/users/user42.png"),
             },
         ],
-        userProfileNames: ["Sonali Mishra", "Roy Ali", "", "", "", ""],
+        userProfileNames: ["George Popa", "Alexandru Ionescu", "", "", "", ""],
         likedPhoto: require("../../assets/images/posts/post10.png"),
-        notificationTime: "2 days ago",
+        notificationTime: "acum 2 zile",
     },
     {
         key: "12",
         itemType: 'Business',
         type: "seeOldPost",
         postTime: "1 year ago",
-        seeTime: "today",
+        seeTime: "azi",
         post: require("../../assets/images/gallery/gallery5.png"),
-        notificationTime: "3 days ago",
+        notificationTime: "acum 3 zile",
     },
     {
         key: "13",
@@ -168,9 +168,9 @@ export const notifications = [
                 userProfilePic: require("../../assets/images/users/user42.png"),
             },
         ],
-        userProfileNames: ["Sonali Mishra", "Roy Ali", "", "", "", ""],
+        userProfileNames: ["Ana Maria Dumitrescu", "George Popa", "", "", "", ""],
         likedPhoto: require("../../assets/images/posts/post10.png"),
-        notificationTime: "2 days ago",
+        notificationTime: "acum 2 zile",
     },
     {
         key: "14",
@@ -178,17 +178,17 @@ export const notifications = [
         type: "mention",
         userProfilePic: require("../../assets/images/users/user3.png"),
         mentionPhoto: require("../../assets/images/gallery/gallery1.png"),
-        userName: "dennyjohn.",
-        mantionUserName: "@samanthaofficial",
-        comment: "very nice...",
-        notificationTime: "3 days ago",
+        userName: "alexionescu.",
+        mantionUserName: "@alexionescu",
+        comment: "foarte frumos...",
+        notificationTime: "acum 3 zile",
     },
     {
         key: "15",
         type: "likeMorePhotos",
         itemType: 'Sportiv',
         userProfilePic: require("../../assets/images/users/user4.png"),
-        userName: "Smiti Khan",
+        userName: "Ana Maria Dumitrescu",
         likedPohotos: [
             {
                 id: "1",
@@ -211,7 +211,7 @@ export const notifications = [
     },
 ];
 
-export const todaysPostsList = [
+export const azisPostsList = [
     {
         id: "1",
         itemType: 'Business',
