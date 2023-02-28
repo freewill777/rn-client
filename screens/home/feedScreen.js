@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-import React, { useState, useRef, useContext, useMemo } from "react";
+import React, { useState, useRef, useContext, useMemo, useEffect } from "react";
 import {
     StyleSheet,
     Text,
@@ -27,6 +27,7 @@ const FeedScreen = ({ navigation }) => {
     const [todaysPosts, setTodaysPosts] = useState(todaysPostsList);
 
     const [searching, setSearching] = useState(false);
+    const [text, onChangeText] = React.useState('');
 
     const renderItem = (data) => (
         <View style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
@@ -417,13 +418,13 @@ const FeedScreen = ({ navigation }) => {
                 />
             </View>
         </View>
-        // </Animated.View>
     );
     const buttons = ['User', 'Sportiv', 'Club', 'Business']
     const { name } = useContext(UserContext)
     const [selectedIndexes, setSelectedIndexes] = useState([]);
     const selectedFilters = useMemo(() => selectedIndexes.map(index => buttons[index]), [selectedIndexes]);
-    const listData = useMemo(() => notifications.filter(notification => selectedFilters.length > 0 ? selectedFilters.includes(notification.itemType) : true));
+    const listData = useMemo(() => notifications.filter(notification => selectedFilters.length > 0 ? selectedFilters.includes(notification.itemType) : true), [selectedFilters]);
+    const queryData = useMemo(() => listData.filter(item => text.length > 0 ? item?.userName?.toLowerCase().includes(text.toLowerCase()) : true))
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
@@ -446,6 +447,8 @@ const FeedScreen = ({ navigation }) => {
                                 style={{ ...styles.searchFieldStyle, marginRight: 8 }}
                                 placeholderTextColor={Colors.grayColor}
                                 cursorColor={Colors.primaryColor}
+                                onChangeText={onChangeText}
+                                value={text}
                             />
                             <MaterialIcons onPress={() => setSearching(!searching)} name='search' color={Colors.blackColor} size={28}
                                 style={{ marginRight: -6 }}
@@ -477,7 +480,7 @@ const FeedScreen = ({ navigation }) => {
                 <FlatList
                     ListHeaderComponent={
                         <>
-                            {listData.length == 0
+                            {listData.length === 0
                                 ? noNotiificationInfo()
                                 : notificationsInfo()}
                         </>
@@ -529,7 +532,7 @@ const FeedScreen = ({ navigation }) => {
         return (
             <View style={{ paddingTop: Sizes.fixPadding }}>
                 <SwipeListView
-                    data={listData}
+                    data={queryData}
                     renderItem={renderItem}
                     renderHiddenItem={renderHiddenItem}
                     rightOpenValue={-width}
