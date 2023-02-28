@@ -58,7 +58,7 @@ const BottomTabBarScreen = ({ navigation }) => {
                         tabIndex: 1,
                         iconName: 'home',
                     })}
-                                        {bottomTabBarItem({
+                    {bottomTabBarItem({
                         tabIndex: 4,
                         iconName: 'message',
                     })}
@@ -83,7 +83,7 @@ const BottomTabBarScreen = ({ navigation }) => {
                         activeOpacity={0.7}
                         onPress={() => navigation.push('SearchDetail')}
                     >
-                        <MaterialIcons name="search" size={28} color={Colors.grayColor} />
+                        <MaterialIcons name="groups" size={32} color={Colors.grayColor} />
 
                     </TouchableOpacity>
                     <TouchableOpacity
