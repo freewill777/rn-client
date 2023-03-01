@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
     TextInput
 } from "react-native";
-
+import { Platform } from "react-native";
 import { Colors, Fonts, Sizes } from "../../constants/styles";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { SwipeListView } from "react-native-swipe-list-view";
@@ -20,6 +20,8 @@ import { ButtonGroup } from '@rneui/themed'
 import { UserContext } from "../../UserProvider";
 import { FontStyles } from "../../constants/styles";
 import { notifications, todaysPostsList } from "./data";
+
+import { shadowStyle } from "../../appData";
 
 const { width, height } = Dimensions.get("window");
 
@@ -323,6 +325,7 @@ const FeedScreen = ({ navigation }) => {
                                 borderRadius: Sizes.fixPadding,
                                 backgroundColor: Colors.whiteColor,
                                 elevation: 2.0,
+                                ...(Platform.OS === 'ios' ? shadowStyle : {})
                             }}
                         >
                             <Image
@@ -428,7 +431,7 @@ const FeedScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
             <View style={{ flex: 1 }}>
-                {<View style={{ ...styles.headerWrapStyle, flexDirection: "row" }}>
+                {<View style={{ ...styles.headerWrapStyle, flexDirection: "row", ...(Platform.OS === 'ios' ? shadowStyle : {}) }}>
                     <View style={{ width: '50%', flexDirection: "row", alignItems: 'center' }}>
                         <Image
                             source={require("../../assets/images/homeAppLogo.png")}
