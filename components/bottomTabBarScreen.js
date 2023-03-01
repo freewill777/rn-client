@@ -9,7 +9,11 @@ import MessageScreen from "../screens/message/messageScreen";
 import ProfileScreen from "../screens/profile/profileScreen";
 import { MaterialIcons } from '@expo/vector-icons';
 import { BottomBarIndexContext } from "./botomTabBarIndexContext";
+
 import CompetitorsScreen from "../screens/competitors/competitorsScreen";
+import GroupsScreen from "../screens/groups/groupsScreen";
+import EventsScreen from "../screens/events/eventsScreen";
+import BlogScreen from "../screens/blog/blogScreen";
 
 const BottomTabBarScreen = ({ navigation }) => {
 
@@ -50,7 +54,16 @@ const BottomTabBarScreen = ({ navigation }) => {
                             index == 6 ?
                                 <CompetitorsScreen navigation={navigation} />
                                 :
-                                <ProfileScreen navigation={navigation} />
+                                index == 7 ?
+                                    <GroupsScreen navigation={navigation} />
+                                    :
+                                    index == 8 ?
+                                        <EventsScreen navigation={navigation} />
+                                        :
+                                        index == 9 ?
+                                            <BlogScreen navigation={navigation} />
+                                            :
+                                            <ProfileScreen navigation={navigation} />
 
                 }
                 <View style={styles.bottomTabBarStyle}>
@@ -79,13 +92,10 @@ const BottomTabBarScreen = ({ navigation }) => {
                         tabIndex: 5,
                         iconName: 'person',
                     })}
-                    <TouchableOpacity
-                        activeOpacity={0.7}
-                        onPress={() => navigation.push('SearchDetail')}
-                    >
-                        <MaterialIcons name="groups" size={32} color={Colors.grayColor} />
-
-                    </TouchableOpacity>
+                    {bottomTabBarItem({
+                        tabIndex: 7,
+                        iconName: 'groups',
+                    })}
                     <TouchableOpacity
                         activeOpacity={0.7}
                         onPress={() => navigation.openDrawer()}
@@ -133,7 +143,7 @@ const BottomTabBarScreen = ({ navigation }) => {
                         source={iconName}
                         style={{ ...styles.iconStyle, tintColor: index == tabIndex ? Colors.blackColor : Colors.lightGrayColor }}
                     /> */}
-                    <MaterialIcons name={iconName} size={28} color={Colors.grayColor} />
+                    <MaterialIcons name={iconName} size={28} color={tabIndex === index ? Colors.primaryColor: Colors.grayColor} />
                 </TouchableOpacity>
         )
     }

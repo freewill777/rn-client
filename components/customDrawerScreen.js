@@ -89,32 +89,32 @@ const CustomDrawer = props => {
         return (
             <View>
                 {drawerOptionSort({
-                    icon: <MaterialIcons name="av-timer" size={22} color={Colors.blackColor} />,
-                    option: 'Your Activity',
+                    icon: <MaterialIcons name="event" size={22} color={Colors.blackColor} />,
+                    option: 'Evenimente',
                     onPress: () => {
                         props.navigation.closeDrawer()
-                        props.navigation.push('UserActivity')
+                        changeIndex(8)
                     }
                 })}
                 {drawerOptionSort({
-                    icon: <MaterialIcons name="av-timer" size={22} color={Colors.blackColor} />,
+                    icon: <MaterialIcons name="healing" size={22} color={Colors.blackColor} />,
                     option: 'Donează',
                     onPress: () => {
                         props.navigation.closeDrawer()
-                        props.navigation.push('CompetitorsScreen')
+                        changeIndex(6)
                     }
                 })}
                 {drawerOptionSort({
-                    icon: <MaterialIcons name="notifications-none" size={22} color={Colors.blackColor} />,
-                    option: 'Notifications',
+                    icon: <MaterialIcons name="my-library-books" size={22} color={Colors.blackColor} />,
+                    option: 'Blog',
                     onPress: () => {
                         props.navigation.closeDrawer()
-                        changeIndex(2)
+                        changeIndex(9)
                     }
                 })}
                 {drawerOptionSort({
                     icon: <MaterialIcons name="lock-outline" size={22} color={Colors.blackColor} />,
-                    option: 'Account Privacy',
+                    option: 'Confidențialitatea contului',
                     onPress: () => {
                         props.navigation.closeDrawer()
                         props.navigation.push('AccountPrivacy')
@@ -122,7 +122,7 @@ const CustomDrawer = props => {
                 })}
                 {drawerOptionSort({
                     icon: <MaterialCommunityIcons name="close-circle-outline" size={22} color={Colors.blackColor} />,
-                    option: 'Block Accounts',
+                    option: 'Conturi blocate',
                     onPress: () => {
                         props.navigation.closeDrawer()
                         props.navigation.push('BlockAccounts')
@@ -130,7 +130,7 @@ const CustomDrawer = props => {
                 })}
                 {drawerOptionSort({
                     icon: <MaterialIcons name="attach-file" size={22} color={Colors.blackColor} />,
-                    option: 'Link Accounts',
+                    option: 'Conturi asociate',
                     onPress: () => {
                         props.navigation.closeDrawer()
                         props.navigation.push('LinkAccounts')
@@ -138,7 +138,7 @@ const CustomDrawer = props => {
                 })}
                 {drawerOptionSort({
                     icon: <MaterialIcons name="info-outline" size={22} color={Colors.blackColor} />,
-                    option: 'About',
+                    option: 'Despre',
                     onPress: () => {
                         props.navigation.closeDrawer()
                         props.navigation.push('About')
@@ -146,7 +146,7 @@ const CustomDrawer = props => {
                 })}
                 {drawerOptionSort({
                     icon: <MaterialIcons name="help-outline" size={22} color={Colors.blackColor} />,
-                    option: 'Help',
+                    option: 'Ajutor',
                     onPress: () => {
                         props.navigation.closeDrawer()
                         props.navigation.push('Help')
@@ -177,7 +177,8 @@ const CustomDrawer = props => {
         return (
             <View style={styles.headerStyle}>
                 <Text style={{ ...Fonts.blackColor20SemiBold }}>
-                    Settings
+                    {/* settings */}
+                    {' '}
                 </Text>
             </View>
         )

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native'
 
 import { Colors, Fonts, Sizes } from '../../constants/styles'
@@ -115,7 +115,7 @@ const followRequestsList = [
 
 
 const CompetitorsScreen = ({ navigation }) => {
-    const [followRequests, setFollowRequests] = useState(followRequestsList);
+    const [followRequests, setFollowRequests] = React.useState(followRequestsList);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.whiteColor }}>

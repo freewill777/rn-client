@@ -126,7 +126,7 @@ const MessageScreen = ({ navigation }) => {
         return (
             <View style={styles.headerWrapStyle}>
                 <Text style={{ ...Fonts.blackColor20SemiBold }}>
-                    Chat groups
+                    Chat
                 </Text>
                 <MaterialIcons name="search" size={22} color={Colors.blackColor} onPress={() => { navigation.push('SearchChat') }} />
             </View>
