@@ -1,17 +1,24 @@
 import React from 'react'
-import { Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native'
 
-import { Colors, Fonts, Sizes } from '../../constants/styles'
+import ScreenShell from '../../components/screenShell'
+import ScreenHeader from '../../components/screenHeader'
+import ScreenContentShell from '../../components/screenContentShell'
+
+import ListItem from '../../components/listItem'
+import List from '../../components/list'
 
 const GroupsScreen = ({ navigation }) => {
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
-            <View style={{ flex: 1, }}>
-                <Text>Groups</Text>
-                <View style={{ backgroundColor: Colors.extraLightGrayColor, height: 2 }} />
-            </View>
-        </SafeAreaView>
+        <ScreenShell>
+            <ScreenHeader title={'Grupuri'} />
+            <ScreenContentShell>
+                <List
+                    data={[{}, {}, {}, {}]}
+                    renderItem={() => <ListItem title='Group 1' subtitle='Basket' />}
+                />
+            </ScreenContentShell>
+        </ScreenShell>
     )
 
 }
