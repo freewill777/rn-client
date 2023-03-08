@@ -93,7 +93,7 @@ const CustomDrawer = props => {
                     option: 'Evenimente',
                     onPress: () => {
                         props.navigation.closeDrawer()
-                        changeIndex(8)
+                        changeIndex(7)
                     }
                 })}
                 {drawerOptionSort({
@@ -101,7 +101,7 @@ const CustomDrawer = props => {
                     option: 'Donează',
                     onPress: () => {
                         props.navigation.closeDrawer()
-                        changeIndex(6)
+                        changeIndex(8)
                     }
                 })}
                 {drawerOptionSort({
@@ -117,23 +117,7 @@ const CustomDrawer = props => {
                     option: 'Confidențialitatea contului',
                     onPress: () => {
                         props.navigation.closeDrawer()
-                        props.navigation.push('AccountPrivacy')
-                    }
-                })}
-                {drawerOptionSort({
-                    icon: <MaterialCommunityIcons name="close-circle-outline" size={22} color={Colors.blackColor} />,
-                    option: 'Conturi blocate',
-                    onPress: () => {
-                        props.navigation.closeDrawer()
-                        props.navigation.push('BlockAccounts')
-                    }
-                })}
-                {drawerOptionSort({
-                    icon: <MaterialIcons name="attach-file" size={22} color={Colors.blackColor} />,
-                    option: 'Conturi asociate',
-                    onPress: () => {
-                        props.navigation.closeDrawer()
-                        props.navigation.push('LinkAccounts')
+                        changeIndex(10)
                     }
                 })}
                 {drawerOptionSort({
@@ -141,7 +125,7 @@ const CustomDrawer = props => {
                     option: 'Despre',
                     onPress: () => {
                         props.navigation.closeDrawer()
-                        props.navigation.push('About')
+                        changeIndex(11)
                     }
                 })}
                 {drawerOptionSort({
@@ -149,7 +133,7 @@ const CustomDrawer = props => {
                     option: 'Ajutor',
                     onPress: () => {
                         props.navigation.closeDrawer()
-                        props.navigation.push('Help')
+                        changeIndex(12)
                     }
                 })}
             </View>

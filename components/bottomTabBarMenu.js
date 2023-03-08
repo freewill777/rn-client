@@ -14,26 +14,21 @@ function BottomTabBarMenu({ tabIndex, iconName, index, changeIndex, navigation }
                 navigation
             })}
             {bottomTabBarItem({
-                tabIndex: 4,
+                tabIndex: 2,
                 iconName: 'message',
                 index,
                 changeIndex,
                 navigation
             })}
-            {/* {bottomTabBarItem({
-            tabIndex: 6,
-            iconName: require('../assets/images/icons/selfi.png'),
-        })} */}
             {bottomTabBarItem({
-                tabIndex: 2,
+                tabIndex: 3,
                 iconName: 'notifications',
                 index,
                 changeIndex,
                 navigation
             })}
-            {bottomTabBarItem({
-                // tab no 3 is the special + button
-                tabIndex: 3,
+            {bottomTabBarItemAccent({
+                tabIndex: 4,
                 index,
                 changeIndex,
                 navigation
@@ -47,7 +42,7 @@ function BottomTabBarMenu({ tabIndex, iconName, index, changeIndex, navigation }
                 navigation
             })}
             {bottomTabBarItem({
-                tabIndex: 7,
+                tabIndex: 6,
                 iconName: 'groups',
                 index,
                 changeIndex,
@@ -66,28 +61,28 @@ function BottomTabBarMenu({ tabIndex, iconName, index, changeIndex, navigation }
 
 function bottomTabBarItem({ tabIndex, iconName, index, changeIndex, navigation }) {
     return (
-        tabIndex == 3
-            ?
-            <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => { navigation.push('Post') }}
-                style={styles.uploadIconWrapStyle}
-            >
-                <MaterialIcons name='add' size={28} color={Colors.whiteColor} />
-            </TouchableOpacity>
-            :
-            <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => { tabIndex == index ? null : changeIndex(tabIndex) }}
-            >
-                {/* <Image
-                    source={iconName}
-                    style={{ ...styles.iconStyle, tintColor: index == tabIndex ? Colors.blackColor : Colors.lightGrayColor }}
-                /> */}
-                <MaterialIcons name={iconName} size={28} color={tabIndex === index ? Colors.primaryColor : Colors.grayColor} />
-            </TouchableOpacity>
+        <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => { tabIndex == index ? null : changeIndex(tabIndex) }}
+        >
+            <MaterialIcons name={iconName} size={28} color={tabIndex === index ? Colors.primaryColor : Colors.grayColor} />
+        </TouchableOpacity>
     )
 }
+
+function bottomTabBarItemAccent({ tabIndex, iconName, index, changeIndex, navigation }) {
+    return (
+        <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => { tabIndex == index ? null : changeIndex(tabIndex) }}
+            style={styles.uploadIconWrapStyle}
+        >
+            <MaterialIcons name='add' size={28} color={Colors.whiteColor} />
+        </TouchableOpacity>
+    )
+}
+
+
 
 export default BottomTabBarMenu
 
