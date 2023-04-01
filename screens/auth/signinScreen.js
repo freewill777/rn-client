@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, BackHandler, StatusBar, Dimension
 import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { UserContext } from '../../UserProvider';
 
@@ -10,7 +11,7 @@ const { width } = Dimensions.get('window');
 
 const SigninScreen = ({ navigation }) => {
 
-    const { loggedIn, setLoggedIn, name, setName } = useContext(UserContext)
+    const { loggedIn, setLoggedIn, name, setName, attemptLogin, setUserId } = useContext(UserContext)
     const backAction = () => {
         backClickCount == 1 ? BackHandler.exitApp() : _spring();
         return true;
@@ -35,6 +36,25 @@ const SigninScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
 
+    const login = async () => {
+        try {
+            console.log(email, password)
+            const response = await fetch(`https://eb5e-89-137-216-219.eu.ngrok.io/login?name=${email}&password=${password}`);
+            const json = await response.json();
+            const { id } = json
+            console.log('id', id)
+            if (id !== undefined) {
+                setUserId(String(id))
+                await AsyncStorage.setItem('@userId', String(id))
+                navigation.push('BottomTabBar')
+            }
+            if (id === undefined) {
+                alert('eroare')
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.secondaryColor }}>
             <StatusBar translucent={false} backgroundColor={Colors.secondaryColor} />
@@ -46,10 +66,7 @@ const SigninScreen = ({ navigation }) => {
                     {forgetPasswordText()}
                     {<TouchableOpacity
                         activeOpacity={0.8}
-                        onPress={() => {
-                            navigation.push('Signup')
-                            setName('Dragos')
-                        }}
+                        onPress={login}
                         style={styles.buttonStyle}
                     >
                         <Text style={{ ...Fonts.whiteColor22Bold, paddingVertical: Sizes.fixPadding + 5.0 }}>
@@ -62,7 +79,7 @@ const SigninScreen = ({ navigation }) => {
                 </ScrollView>
             </View>
             {exitInfo()}
-        </SafeAreaView>
+        </SafeAreaView >
     )
 
     function exitInfo() {

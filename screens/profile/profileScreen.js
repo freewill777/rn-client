@@ -1,7 +1,10 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext, useLayoutEffect, useEffect } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions, ScrollView, FlatList, Image, TouchableOpacity } from 'react-native'
 import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+
+import { UserContext } from '../../UserProvider';
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -151,8 +154,10 @@ const imagePosts = [
 ];
 
 const ProfileScreen = ({ navigation, openDrawer }) => {
-
+    const { userId, name, userStats, setUserStats, setName } = useContext(UserContext)
+    const { fullname, description, occupation, posts, videos, followers, following } = userStats
     const [isFollow, setIsFollow] = useState(false);
+    const [stats, setStats] = useState({})
     const [currentTab, setCurrentTab] = useState(0);
 
     const scrollToIndex = ({ index }) => {
@@ -162,14 +167,32 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
 
     const listRef = useRef();
 
+    useEffect(() => {
+        console.log('userId', userId)
+        async function getData() {
+            try {
+                const response = await fetch(`https://eb5e-89-137-216-219.eu.ngrok.io/user?id=${userId}`);
+                const json = await response.json();
+                const { name, stats } = json
+                setUserStats(stats)
+
+                if (name !== undefined) {
+                    setName(name)
+                }
+            } catch (error) {
+                alert(error);
+            }
+        }
+        getData()
+    }, [userId])
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
             <StatusBar translucent={false} backgroundColor={Colors.primaryColor} />
             <View style={{ flex: 1, zIndex: 1 }}>
                 {header()}
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: Sizes.fixPadding * 7.0, }}>
-                    {userPostsAndFollowersRelatedInfo()}
-                    {userInfo()}
+                    <UserPostsAndFollowersRelatedInfo />
+                    <UserInfo />
                     {editProfileButton()}
                     {tabs()}
                 </ScrollView>
@@ -352,34 +375,25 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
         )
     }
 
-    function userInfo() {
+    function UserInfo() {
+        const { userStats } = useContext(UserContext)
+        const { fullname, description1, description2, occupation, posts, videos, followers, following } = userStats
         return (
             <View style={{ marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
                     <View style={{ flex: 1, }}>
                         <Text numberOfLines={1} style={{ ...Fonts.blackColor18SemiBold }}>
-                            Samantha Smith
+                            {fullname}
                         </Text>
                         <Text numberOfLines={1} style={{ ...Fonts.grayColor14Regular }}>
-                            Artist
+                            {occupation}
                         </Text>
                         <Text numberOfLines={1} style={{ ...Fonts.blackColor14Regular }}>
-                            Art + Prints + Workshops
+                            {description1}
                         </Text>
                         <Text numberOfLines={1}>
                             <Text style={{ ...Fonts.blackColor14Regular }}>
-                                Find me on { }
-                            </Text>
-                            <Text style={{ ...Fonts.blueColor14Regular }}>
-                                @samantha___
-                            </Text>
-                        </Text>
-                        <Text numberOfLines={1}>
-                            <Text style={{ ...Fonts.blackColor14Regular }}>
-                                Website: { }
-                            </Text>
-                            <Text style={{ ...Fonts.blueColor14Regular }}>
-                                www.officialsamantha.com
+                                {description2}
                             </Text>
                         </Text>
                     </View>
@@ -390,14 +404,17 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
                 </View>
             </View>
         )
+
     }
 
-    function userPostsAndFollowersRelatedInfo() {
+    function UserPostsAndFollowersRelatedInfo() {
+        const { userStats } = useContext(UserContext)
+        const { posts, videos, followers, following } = userStats
         return (
             <View style={styles.userPostsAndFollowersRelatedInfoWrapStyle}>
                 <View style={{ alignItems: 'center', }}>
                     <Text style={{ ...Fonts.blackColor16Bold }}>
-                        105
+                        {posts}
                     </Text>
                     <Text numberOfLines={1} style={{ maxWidth: width / 4.3, ...Fonts.grayColor14Regular }}>
                         posts
@@ -405,7 +422,7 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
                 </View>
                 <View style={{ alignItems: 'center', }}>
                     <Text style={{ ...Fonts.blackColor16Bold }}>
-                        59
+                        {videos}
                     </Text>
                     <Text numberOfLines={1} style={{ maxWidth: width / 4.3, ...Fonts.grayColor14Regular }}>
                         videos
@@ -413,7 +430,7 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
                 </View>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => { navigation.push('Followers') }} style={{ alignItems: 'center', }}>
                     <Text style={{ ...Fonts.blackColor16Bold }}>
-                        850k
+                        {followers}
                     </Text>
                     <Text numberOfLines={1} style={{ maxWidth: width / 4.3, ...Fonts.grayColor14Regular }}>
                         followers
@@ -421,7 +438,7 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => { navigation.push('Followings') }} style={{ alignItems: 'center', }}>
                     <Text style={{ ...Fonts.blackColor16Bold }}>
-                        542
+                        {following}
                     </Text>
                     <Text numberOfLines={1} style={{ maxWidth: width / 4.3, ...Fonts.grayColor14Regular }}>
                         following
@@ -435,7 +452,7 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
         return (
             <View style={styles.headerWrapStyle}>
                 <Text style={{ flex: 1, marginHorizontal: Sizes.fixPadding - 5.0, ...Fonts.blackColor20SemiBold }}>
-                    samanthaofficial
+                    {name}
                 </Text>
                 <MaterialIcons name="menu" size={22} color={Colors.blackColor} onPress={() => { navigation.openDrawer(); }} />
             </View>
