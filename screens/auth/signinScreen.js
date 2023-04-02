@@ -39,7 +39,7 @@ const SigninScreen = ({ navigation }) => {
     const login = async () => {
         try {
             console.log(email, password)
-            const response = await fetch(`https://eb5e-89-137-216-219.eu.ngrok.io/login?name=${email}&password=${password}`);
+            const response = await fetch(`https://173e-89-137-216-219.eu.ngrok.io/login?name=${email}&password=${password}`);
             const json = await response.json();
             const { id } = json
             console.log('id', id)

@@ -5,6 +5,7 @@ import { Colors, Fonts, Sizes } from '../constants/styles';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { BottomBarIndexContext } from './botomTabBarIndexContext';
 import { Overlay } from '@rneui/themed';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CustomDrawer = props => {
 
@@ -51,7 +52,8 @@ const CustomDrawer = props => {
                         </TouchableOpacity>
                         <TouchableOpacity
                             activeOpacity={0.8}
-                            onPress={() => {
+                            onPress={async () => {
+                                await AsyncStorage.setItem('@userId', '')
                                 setShowLogoutDialog(false)
                                 props.navigation.closeDrawer()
                                 props.navigation.push('Signin')

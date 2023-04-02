@@ -2,6 +2,7 @@ import React, { useState, useRef, useContext, useLayoutEffect, useEffect } from 
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions, ScrollView, FlatList, Image, TouchableOpacity } from 'react-native'
 import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 import { UserContext } from '../../UserProvider';
 
@@ -171,7 +172,7 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
         console.log('userId', userId)
         async function getData() {
             try {
-                const response = await fetch(`https://eb5e-89-137-216-219.eu.ngrok.io/user?id=${userId}`);
+                const response = await fetch(`https://173e-89-137-216-219.eu.ngrok.io/user?id=${userId}`);
                 const json = await response.json();
                 const { name, stats } = json
                 setUserStats(stats)
@@ -374,10 +375,10 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
             </TouchableOpacity>
         )
     }
-
     function UserInfo() {
         const { userStats } = useContext(UserContext)
         const { fullname, description1, description2, occupation, posts, videos, followers, following } = userStats
+        const [image, setImage] = useState(null);
         return (
             <View style={{ marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
@@ -397,12 +398,56 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
                             </Text>
                         </Text>
                     </View>
-                    <Image
-                        source={require('../../assets/images/users/user43.png')}
-                        style={{ width: width / 4.0, height: width / 4.0, borderRadius: (width / 4.0) / 2.0 }}
-                    />
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={async () => {
+                            const formData = new FormData();
+                            let result = await ImagePicker.launchImageLibraryAsync({
+                                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                                allowsEditing: true,
+                                aspect: [4, 3],
+                                quality: 1,
+                            });
+                            console.log(result);
+                            if (!result.canceled) {
+                                setImage(result.uri);
+                                formData.append('image', {
+                                    uri: result.uri,
+                                    type: 'image/jpeg',
+                                    name: 'my-image.jpg',
+                                });
+                                console.log('formData', result.uri)
+                                try {
+                                    const response = await fetch('https://173e-89-137-216-219.eu.ngrok.io/images', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'multipart/form-data',
+                                        },
+                                        body: formData,
+                                    });
+                                    const responseData = await response.json();
+                                    console.log(responseData);
+                                } catch (error) {
+                                    console.error(error);
+                                }
+                            }
+                        }}
+                    >
+                        {!!image ? (
+                            <Image source={{ uri: image }}
+                                style={{ width: width / 4.0, height: width / 4.0, borderRadius: (width / 4.0) / 2.0 }}
+                            />
+                        ) : (
+                            <Image
+                                source={require('../../assets/images/users/user43.png')}
+                                style={{ width: width / 4.0, height: width / 4.0, borderRadius: (width / 4.0) / 2.0 }}
+                            />
+                        )}
+
+                    </TouchableOpacity>
+
                 </View>
-            </View>
+            </View >
         )
 
     }
