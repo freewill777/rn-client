@@ -38,7 +38,7 @@ const CustomDrawer = props => {
             >
                 <View style={{ marginVertical: Sizes.fixPadding * 2.5 }}>
                     <Text style={{ textAlign: 'center', marginHorizontal: Sizes.fixPadding + 5.0, ...Fonts.blackColor20SemiBold }}>
-                        Sure you want to logout?
+                        Sigur vrei sa iesi?
                     </Text>
                     <View style={{ ...styles.cancelAndLogoutButtonWrapStyle, }}>
                         <TouchableOpacity

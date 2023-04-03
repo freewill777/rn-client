@@ -154,11 +154,8 @@ const imagePosts = [
     },
 ];
 
-const ProfileScreen = ({ navigation, openDrawer }) => {
-    const { userId, name, userStats, setUserStats, setName } = useContext(UserContext)
-    const { fullname, description, occupation, posts, videos, followers, following } = userStats
-    const [isFollow, setIsFollow] = useState(false);
-    const [stats, setStats] = useState({})
+const ProfileScreen = ({ navigation }) => {
+    const { userId, name, setUserStats, setName } = useContext(UserContext)
     const [currentTab, setCurrentTab] = useState(0);
 
     const scrollToIndex = ({ index }) => {
@@ -169,10 +166,9 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
     const listRef = useRef();
 
     useEffect(() => {
-        console.log('userId', userId)
-        async function getData() {
+        async function getUserData() {
             try {
-                const response = await fetch(`https://173e-89-137-216-219.eu.ngrok.io/user?id=${userId}`);
+                const response = await fetch(`https://codex.ngrok.app/user?id=${userId}`);
                 const json = await response.json();
                 const { name, stats } = json
                 setUserStats(stats)
@@ -184,7 +180,7 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
                 alert(error);
             }
         }
-        getData()
+        getUserData()
     }, [userId])
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
@@ -408,7 +404,6 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
                                 aspect: [4, 3],
                                 quality: 1,
                             });
-                            console.log(result);
                             if (!result.canceled) {
                                 setImage(result.uri);
                                 formData.append('image', {
@@ -416,17 +411,15 @@ const ProfileScreen = ({ navigation, openDrawer }) => {
                                     type: 'image/jpeg',
                                     name: 'my-image.jpg',
                                 });
-                                console.log('formData', result.uri)
                                 try {
-                                    const response = await fetch('https://173e-89-137-216-219.eu.ngrok.io/images', {
+                                    const response = await fetch('https://codex.ngrok.app/images', {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'multipart/form-data',
                                         },
                                         body: formData,
                                     });
-                                    const responseData = await response.json();
-                                    console.log(responseData);
+                                    // const responseData = await response.json();
                                 } catch (error) {
                                     console.error(error);
                                 }

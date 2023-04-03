@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions, ScrollView, TextInput, TouchableOpacity, Image } from 'react-native'
 import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { UserContext } from '../../UserProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
 const SignupScreen = ({ navigation }) => {
+    const { setUserId } = useContext(UserContext)
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -14,6 +17,29 @@ const SignupScreen = ({ navigation }) => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
+    async function register() {
+        alert(name)
+        alert(password)
+        try {
+            console.log(email, password)
+            const response = await fetch(`https://codex.ngrok.app/register?name=${name}&password=${password}`);
+            const json = await response.json();
+            console.log('json', json)
+            const { id } = json
+            console.log('id', id)
+            if (id !== undefined) {
+                setUserId(String(id))
+                await AsyncStorage.setItem('@userId', String(id))
+                navigation.push('BottomTabBar')
+            }
+            if (id === undefined) {
+                alert('eroare')
+            }
+        } catch (error) {
+            console.error('___', error);
+        }
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.secondaryColor }}>
@@ -39,13 +65,13 @@ const SignupScreen = ({ navigation }) => {
         return (
             <Text style={{ marginBottom: Sizes.fixPadding * 2.0, textAlign: 'center', marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <Text style={{ ...Fonts.lightGrayColor16Regular }}>
-                    Already have an account? { }
+                    Ai deja cont? { }
                 </Text>
                 <Text
                     onPress={() => { navigation.push('Signin') }}
                     style={{ ...Fonts.primaryColor16Bold }}
                 >
-                    Sign In
+                    Logheaza-te
                 </Text>
             </Text>
         )
@@ -91,7 +117,7 @@ const SignupScreen = ({ navigation }) => {
     function orText() {
         return (
             <Text style={{ ...Fonts.lightGrayColor16Regular, marginHorizontal: Sizes.fixPadding * 2.0, textAlign: 'center' }}>
-                OR
+                SAU
             </Text>
         )
     }
@@ -100,11 +126,11 @@ const SignupScreen = ({ navigation }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => { navigation.push('Verification') }}
+                onPress={register}
                 style={styles.buttonStyle}
             >
                 <Text style={{ ...Fonts.whiteColor22Bold, paddingVertical: Sizes.fixPadding + 5.0 }}>
-                    Sign Up
+                    Inregistrare
                 </Text>
             </TouchableOpacity>
         )
@@ -114,14 +140,14 @@ const SignupScreen = ({ navigation }) => {
         return (
             <View style={{ marginBottom: Sizes.fixPadding * 2.0, marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <Text style={{ ...Fonts.lightGrayColor16Regular }}>
-                    Confirm Password
+                    Confirma parola
                 </Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <TextInput
                         value={confirmPassword}
                         onChangeText={(value) => setConfirmPassword(value)}
                         style={{ ...Fonts.whiteColor18Regular, flex: 1 }}
-                        placeholder="Enter Your Password"
+                        placeholder="Confirma parola"
                         placeholderTextColor={Colors.whiteColor}
                         cursorColor={Colors.whiteColor}
                         secureTextEntry={!confirmPasswordVisible}
@@ -142,14 +168,14 @@ const SignupScreen = ({ navigation }) => {
         return (
             <View style={{ marginBottom: Sizes.fixPadding * 2.0, marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <Text style={{ ...Fonts.lightGrayColor16Regular }}>
-                    Password
+                    Parola
                 </Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <TextInput
                         value={password}
                         onChangeText={(value) => setPassword(value)}
                         style={{ ...Fonts.whiteColor18Regular, flex: 1 }}
-                        placeholder="Enter Your Password"
+                        placeholder="Introdu parola"
                         placeholderTextColor={Colors.whiteColor}
                         cursorColor={Colors.whiteColor}
                         secureTextEntry={!passwordVisible}
@@ -170,13 +196,13 @@ const SignupScreen = ({ navigation }) => {
         return (
             <View style={{ marginBottom: Sizes.fixPadding * 2.0, marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <Text style={{ ...Fonts.lightGrayColor16Regular }}>
-                    Phone Number
+                    Telefon
                 </Text>
                 <TextInput
                     value={phoneNumber}
                     onChangeText={(value) => setPhoneNumber(value)}
                     style={{ ...Fonts.whiteColor18Regular }}
-                    placeholder="Enter Your PhoneNumber"
+                    placeholder="Introdu numarul de telefon (optional)"
                     placeholderTextColor={Colors.whiteColor}
                     keyboardType="phone-pad"
                     cursorColor={Colors.whiteColor}
@@ -190,13 +216,13 @@ const SignupScreen = ({ navigation }) => {
         return (
             <View style={{ marginBottom: Sizes.fixPadding * 2.0, marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <Text style={{ ...Fonts.lightGrayColor16Regular }}>
-                    Email Address
+                    Email
                 </Text>
                 <TextInput
                     value={email}
                     onChangeText={(value) => setEmail(value)}
                     style={{ ...Fonts.whiteColor18Regular }}
-                    placeholder="Enter Your Email"
+                    placeholder="Introdu adresa de email (optional)"
                     placeholderTextColor={Colors.whiteColor}
                     keyboardType="email-address"
                     cursorColor={Colors.whiteColor}
@@ -216,7 +242,7 @@ const SignupScreen = ({ navigation }) => {
                     value={name}
                     onChangeText={(value) => setName(value)}
                     style={{ ...Fonts.whiteColor18Regular }}
-                    placeholder="Enter Your Name"
+                    placeholder="Introdu numele tau"
                     placeholderTextColor={Colors.whiteColor}
                     cursorColor={Colors.whiteColor}
                 />
@@ -234,9 +260,10 @@ const SignupScreen = ({ navigation }) => {
     function header() {
         return (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: Sizes.fixPadding + 5.0, marginHorizontal: Sizes.fixPadding * 2.0, }}>
-                <MaterialIcons name="arrow-back-ios" size={22} color={Colors.whiteColor} onPress={() => navigation.pop()} />
+                <MaterialIcons
+                    name="arrow-back-ios" size={22} color={Colors.whiteColor} onPress={() => navigation.pop()} />
                 <Text style={{ marginLeft: Sizes.fixPadding - 5.0, ...Fonts.whiteColor20SemiBold }}>
-                    Sign Up
+                    Cont nou
                 </Text>
             </View>
         )

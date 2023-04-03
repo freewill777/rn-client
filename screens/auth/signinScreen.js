@@ -39,7 +39,7 @@ const SigninScreen = ({ navigation }) => {
     const login = async () => {
         try {
             console.log(email, password)
-            const response = await fetch(`https://173e-89-137-216-219.eu.ngrok.io/login?name=${email}&password=${password}`);
+            const response = await fetch(`https://codex.ngrok.app/login?name=${email}&password=${password}`);
             const json = await response.json();
             const { id } = json
             console.log('id', id)
@@ -70,7 +70,7 @@ const SigninScreen = ({ navigation }) => {
                         style={styles.buttonStyle}
                     >
                         <Text style={{ ...Fonts.whiteColor22Bold, paddingVertical: Sizes.fixPadding + 5.0 }}>
-                            Sign In
+                            Autentificare
                         </Text>
                     </TouchableOpacity>}
                     {orText()}
@@ -100,13 +100,13 @@ const SigninScreen = ({ navigation }) => {
         return (
             <Text style={{ marginBottom: Sizes.fixPadding * 2.0, textAlign: 'center', marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <Text style={{ ...Fonts.lightGrayColor16Regular }}>
-                    Don’t have an account? { }
+                    Nu ai cont? { }
                 </Text>
                 <Text
                     onPress={() => { navigation.push('Signup') }}
                     style={{ ...Fonts.primaryColor16Bold }}
                 >
-                    Sign Up
+                    Inregistreaza-te
                 </Text>
             </Text>
         )
@@ -152,7 +152,7 @@ const SigninScreen = ({ navigation }) => {
     function orText() {
         return (
             <Text style={{ ...Fonts.lightGrayColor16Regular, marginHorizontal: Sizes.fixPadding * 2.0, textAlign: 'center' }}>
-                OR
+                SAU
             </Text>
         )
     }
@@ -160,7 +160,7 @@ const SigninScreen = ({ navigation }) => {
     function forgetPasswordText() {
         return (
             <Text style={{ marginHorizontal: Sizes.fixPadding * 2.0, textAlign: 'right', ...Fonts.lightGrayColor14Regular }}>
-                Forget password?
+                Ai uitat parola?
             </Text>
         )
     }
@@ -169,14 +169,14 @@ const SigninScreen = ({ navigation }) => {
         return (
             <View style={{ marginVertical: Sizes.fixPadding, marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <Text style={{ ...Fonts.lightGrayColor16Regular }}>
-                    Password
+                    Parola
                 </Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <TextInput
                         value={password}
                         onChangeText={(value) => setPassword(value)}
                         style={{ ...Fonts.whiteColor18Regular, flex: 1 }}
-                        placeholder="Enter Your Password"
+                        placeholder="Introdu parola"
                         placeholderTextColor={Colors.whiteColor}
                         cursorColor={Colors.whiteColor}
                         secureTextEntry={!passwordVisible}
@@ -197,13 +197,13 @@ const SigninScreen = ({ navigation }) => {
         return (
             <View style={{ marginVertical: Sizes.fixPadding + 5.0, marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <Text style={{ ...Fonts.lightGrayColor16Regular }}>
-                    Email Address
+                    Nume
                 </Text>
                 <TextInput
                     value={email}
                     onChangeText={(value) => setEmail(value)}
                     style={{ ...Fonts.whiteColor18Regular }}
-                    placeholder="Enter Your Email"
+                    placeholder="Introdu numele tau"
                     placeholderTextColor={Colors.whiteColor}
                     keyboardType="email-address"
                     cursorColor={Colors.whiteColor}
@@ -222,7 +222,7 @@ const SigninScreen = ({ navigation }) => {
     function header() {
         return (
             <Text style={{ marginVertical: Sizes.fixPadding + 5.0, marginHorizontal: Sizes.fixPadding * 2.0, ...Fonts.whiteColor20SemiBold }}>
-                Sign In
+                Autentificare
             </Text>
         )
     }
