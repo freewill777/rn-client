@@ -37,7 +37,6 @@ export default function PlusScreen() {
             name: 'my-image.jpg',
         });
         formData.append('userId', userId)
-        alert('pizda')
         try {
             const response = await fetch(`http://50ab-89-137-216-219.ngrok-free.app/upload_files`, {
                 method: 'POST',
