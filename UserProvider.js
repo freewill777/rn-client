@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const {HOST} = require("./settings")
 
 export const UserContext = createContext();
 
@@ -57,7 +58,7 @@ export const UserProvider = ({ children }) => {
     )
 
     async function attemptLogin({ user, pass }) {
-        const resp = await fetch(`https://codex.ngrok.app/login?name=${user}&password=${pass}`)
+        const resp = await fetch(`${HOST}/login?name=${user}&password=${pass}`)
         const data = await resp.json()
         return data
     }

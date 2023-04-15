@@ -1,10 +1,11 @@
 import React, { createContext } from 'react'
 
 import io from "socket.io-client";
+import {HOST} from "./settings";
 
 export const SocketContext = createContext();
 
-export const socket = io("http://192.168.0.17:3000");
+export const socket = io(HOST);
 
 export const SocketProvider = ({ children }) => {
     return (

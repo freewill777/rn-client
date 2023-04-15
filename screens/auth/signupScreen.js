@@ -4,6 +4,7 @@ import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { UserContext } from '../../UserProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const {HOST} = require("../../settings")
 
 const { width } = Dimensions.get('window');
 
@@ -19,11 +20,15 @@ const SignupScreen = ({ navigation }) => {
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
     async function register() {
-        alert(name)
-        alert(password)
         try {
-            console.log(email, password)
-            const response = await fetch(`https://codex.ngrok.app/register?name=${name}&password=${password}`);
+            if (!email.includes('@')) {
+                alert("email not valid!!")
+                return
+            }
+            const response = await fetch(`${HOST}/register?name=${name}&password=${password}&email=${email}`,
+                {
+                    method: "POST"
+                });
             const json = await response.json();
             console.log('json', json)
             const { id } = json
@@ -222,7 +227,7 @@ const SignupScreen = ({ navigation }) => {
                     value={email}
                     onChangeText={(value) => setEmail(value)}
                     style={{ ...Fonts.whiteColor18Regular }}
-                    placeholder="Introdu adresa de email (optional)"
+                    placeholder="Introdu adresa de email"
                     placeholderTextColor={Colors.whiteColor}
                     keyboardType="email-address"
                     cursorColor={Colors.whiteColor}

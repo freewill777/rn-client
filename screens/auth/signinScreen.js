@@ -6,6 +6,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { UserContext } from '../../UserProvider';
+import {HOST} from "../../settings";
 
 const { width } = Dimensions.get('window');
 
@@ -39,7 +40,7 @@ const SigninScreen = ({ navigation }) => {
     const login = async () => {
         try {
             console.log(email, password)
-            const response = await fetch(`https://codex.ngrok.app/login?name=${email}&password=${password}`);
+            const response = await fetch(`${HOST}/login?email=${email}&password=${password}`);
             const json = await response.json();
             const { id } = json
             console.log('id', id)
@@ -197,13 +198,13 @@ const SigninScreen = ({ navigation }) => {
         return (
             <View style={{ marginVertical: Sizes.fixPadding + 5.0, marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <Text style={{ ...Fonts.lightGrayColor16Regular }}>
-                    Nume
+                    E-mail
                 </Text>
                 <TextInput
                     value={email}
                     onChangeText={(value) => setEmail(value)}
                     style={{ ...Fonts.whiteColor18Regular }}
-                    placeholder="Introdu numele tau"
+                    placeholder="Introdu e-mailul tau"
                     placeholderTextColor={Colors.whiteColor}
                     keyboardType="email-address"
                     cursorColor={Colors.whiteColor}
