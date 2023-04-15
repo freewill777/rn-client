@@ -12,6 +12,7 @@ import BlogScreen from "../screens/blog/blogScreen";
 import ConfidentialityScreen from "../screens/confidentiality/confidentialityScreen";
 import AboutScreen from "../screens/about/aboutScreen";
 import HelpScreen from "../screens/help/helpScreen"
+import PlusScreen from "../screens/plusScreen/plusScreen";
 
 import { Colors } from "../constants/styles";
 import BottomTabBarMenu from "./bottomTabBarMenu";
@@ -28,7 +29,7 @@ const BottomTabBarScreen = ({ navigation }) => {
                 {index === 1 && <FeedScreen navigation={navigation} />}
                 {index === 2 && <MessageScreen navigation={navigation} />}
                 {index === 3 && <NotificationScreen navigation={navigation} />}
-                {index === 4 && <></>}
+                {index === 4 && <PlusScreen />}
                 {index === 5 && <ProfileScreen navigation={navigation} />}
                 {index === 6 && <GroupsScreen navigation={navigation} />}
                 {index === 7 && <EventsScreen navigation={navigation} />}
@@ -37,7 +38,7 @@ const BottomTabBarScreen = ({ navigation }) => {
                 {index === 10 && <ConfidentialityScreen navigation={navigation} />}
                 {index === 11 && <AboutScreen navigation={navigation} />}
                 {index === 12 && <HelpScreen navigation={navigation} />}
-                <BottomTabBarMenu index={index} changeIndex={changeIndex} navigation={navigation} />
+                {index !== 4 && <BottomTabBarMenu index={index} changeIndex={changeIndex} navigation={navigation} />}
             </View>
         </SafeAreaView>
     )

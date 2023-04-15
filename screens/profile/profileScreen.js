@@ -418,6 +418,8 @@ const ProfileScreen = ({ navigation }) => {
                                         method: 'POST',
                                         headers: {
                                             'userId': userId,
+                                            'mediaType': 'image',
+                                            'isAvatar': 'yes'
                                         },
                                         body: formData,
                                     });
