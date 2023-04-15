@@ -5,7 +5,7 @@ import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
 import { UserContext } from '../../UserProvider';
-
+import { HOST } from '../../settings';
 
 const { width, height } = Dimensions.get('window');
 
@@ -168,7 +168,7 @@ const ProfileScreen = ({ navigation }) => {
     useEffect(() => {
         async function getUserData() {
             try {
-                const response = await fetch(`https://codex.ngrok.app/user?id=${userId}`);
+                const response = await fetch(`${HOST}/user?id=${userId}`);
                 const json = await response.json();
                 const { name, stats } = json
                 setUserStats(stats)
@@ -397,7 +397,7 @@ const ProfileScreen = ({ navigation }) => {
                     <TouchableOpacity
                         activeOpacity={0.7}
                         onPress={async () => {
-                            const formData = new FormData();
+
                             let result = await ImagePicker.launchImageLibraryAsync({
                                 mediaTypes: ImagePicker.MediaTypeOptions.All,
                                 allowsEditing: true,
@@ -405,17 +405,19 @@ const ProfileScreen = ({ navigation }) => {
                                 quality: 1,
                             });
                             if (!result.canceled) {
+                                const formData = new FormData();
                                 setImage(result.uri);
-                                formData.append('image', {
+                                formData.append('files', {
                                     uri: result.uri,
                                     type: 'image/jpeg',
                                     name: 'my-image.jpg',
                                 });
+                                formData.append('userId', userId)
                                 try {
-                                    const response = await fetch('https://codex.ngrok.app/images', {
+                                    const response = await fetch(`${HOST}/upload_files`, {
                                         method: 'POST',
                                         headers: {
-                                            'Content-Type': 'multipart/form-data',
+                                            'userId': userId,
                                         },
                                         body: formData,
                                     });
