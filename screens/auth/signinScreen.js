@@ -6,6 +6,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { UserContext } from '../../UserProvider';
+import {HOST} from "../../settings";
 
 const { width } = Dimensions.get('window');
 
@@ -39,7 +40,7 @@ const SigninScreen = ({ navigation }) => {
     const login = async () => {
         try {
             console.log(email, password)
-            const response = await fetch(`https://codex.ngrok.app/login?name=${email}&password=${password}`);
+            const response = await fetch(`${HOST}/login?name=${email}&password=${password}`);
             const json = await response.json();
             const { id } = json
             console.log('id', id)
