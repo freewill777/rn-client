@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useContext } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Video } from 'expo-av';
 import * as MediaLibrary from 'expo-media-library'
@@ -14,6 +14,7 @@ export default function Recorder({ turnOff }) {
     const cameraRef = useRef()
     const [isRecording, setIsRecording] = useState(false)
     const [video, setVideo] = useState()
+    const [cameraType, setCameraType] = useState(Camera.Constants.Type.back)
 
 
     useEffect(() => {
@@ -98,12 +99,36 @@ export default function Recorder({ turnOff }) {
         )
     }
 
-
+    const __switchCamera = () => {
+        if (cameraType === 'back') {
+            setCameraType('front')
+        } else {
+            setCameraType('back')
+        }
+    }
     return (
-        <Camera style={styles.container} ref={cameraRef}>
+        <Camera style={styles.container} ref={cameraRef} type={cameraType}>
             <View style={styles.buttonContainer}>
                 <Button title='Close' onPress={turnOff} />
                 <Button title={isRecording ? 'Stop Recording' : 'Record Video'} onPress={isRecording ? stopRecording : recordVideo} />
+                <TouchableOpacity
+                    onPress={__switchCamera}
+                    style={{
+                        marginTop: 20,
+                        borderRadius: '50%',
+                        height: 35,
+                        width: 35,
+                        left: 8
+                    }}
+                >
+                    <Text
+                        style={{
+                            fontSize: 20
+                        }}
+                    >
+                        {cameraType === 'front' ? '🤳' : '📷'}
+                    </Text>
+                </TouchableOpacity>
             </View>
         </Camera>
     );

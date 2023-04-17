@@ -5,6 +5,7 @@ import {
     ScrollView, FlatList, TouchableOpacity,
     Image,
 } from 'react-native'
+import { Video, ResizeMode } from 'expo-av';
 
 import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -60,48 +61,18 @@ const videoPosts = [
     },
     {
         id: '4',
-        image: require('../../assets/images/videoThumbnails/thumbnail4.png'),
-        views: '190k',
+        image: require('../../assets/images/videoThumbnails/thumbnail3.png'),
+        views: '120k',
     },
     {
         id: '5',
-        image: require('../../assets/images/videoThumbnails/thumbnail5.png'),
-        views: '200k',
+        image: require('../../assets/images/videoThumbnails/thumbnail3.png'),
+        views: '120k',
     },
     {
         id: '6',
-        image: require('../../assets/images/videoThumbnails/thumbnail6.png'),
+        image: require('../../assets/images/videoThumbnails/thumbnail3.png'),
         views: '120k',
-    },
-    {
-        id: '7',
-        image: require('../../assets/images/videoThumbnails/thumbnail7.png'),
-        views: '190k',
-    },
-    {
-        id: '8',
-        image: require('../../assets/images/videoThumbnails/thumbnail8.png'),
-        views: '200k',
-    },
-    {
-        id: '9',
-        image: require('../../assets/images/videoThumbnails/thumbnail9.png'),
-        views: '120k',
-    },
-    {
-        id: '10',
-        image: require('../../assets/images/videoThumbnails/thumbnail10.png'),
-        views: '190k',
-    },
-    {
-        id: '11',
-        image: require('../../assets/images/videoThumbnails/thumbnail11.png'),
-        views: '190k',
-    },
-    {
-        id: '12',
-        image: require('../../assets/images/videoThumbnails/thumbnail12.png'),
-        views: '200k',
     },
 ];
 
@@ -125,14 +96,20 @@ const imagePosts = [
 ];
 
 const ProfileScreen = ({ navigation }) => {
-    const { userId, name, setUserStats, setName } = useContext(UserContext)
-    const [currentTab, setCurrentTab] = useState(0);
+    const { userId, name, setUserStats, setName, userStats } = useContext(UserContext)
+    const [currentTab, setCurrentTab] = useState(1);
     const [photo, setPhoto] = useState(null);
+
+    const { fullname, description1, description2, occupation } = userStats
+    const [profileImage, setProfileImage] = useState(null);
 
     const [photos, setPhotos] = useState([]);
     const [videos, setVideos] = useState([]);
+
     const [photosLength, setPhotosLength] = useState(undefined)
     const [videosLength, setVideosLength] = useState(undefined)
+    const [following, setFollowing] = useState(undefined)
+    const [followers, setFollowers] = useState(undefined)
 
     const scrollToIndex = ({ index }) => {
         listRef.current.scrollToIndex({ animated: true, index: index });
@@ -159,6 +136,59 @@ const ProfileScreen = ({ navigation }) => {
         getUserData()
     }, [userId])
 
+    useEffect(() => {
+        async function getUserData() {
+            try {
+                const response = await fetch(`${HOST}/photos-length?userId=${userId}`);
+                const json = await response.json();
+                setPhotosLength(json)
+            } catch (error) {
+                alert(error);
+            }
+        }
+        getUserData()
+    }, [userId])
+
+    useEffect(() => {
+        async function getUserData() {
+            try {
+                const response = await fetch(`${HOST}/videos-length?userId=${userId}`);
+                const json = await response.json();
+                setVideosLength(json)
+                console.log('videos', json)
+            } catch (error) {
+                alert(error);
+            }
+        }
+        getUserData()
+    }, [userId])
+
+    useEffect(() => {
+        async function getUserData() {
+            try {
+                const response = await fetch(`${HOST}/following?userId=${userId}`);
+                const json = await response.json();
+                setFollowing(json.length)
+            } catch (error) {
+                alert(error);
+            }
+        }
+        getUserData()
+    }, [userId])
+
+    useEffect(() => {
+        async function getUserData() {
+            try {
+                const response = await fetch(`${HOST}/followers?userId=${userId}`);
+                const json = await response.json();
+                setFollowers(json.length)
+            } catch (error) {
+                alert(error);
+            }
+        }
+        getUserData()
+    }, [userId])
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
             <StatusBar translucent={false} backgroundColor={Colors.primaryColor} />
@@ -166,7 +196,74 @@ const ProfileScreen = ({ navigation }) => {
                 {header()}
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: Sizes.fixPadding * 7.0, }}>
                     <UserPostsAndFollowersRelatedInfo />
-                    <UserInfo />
+                    {<View style={{ marginHorizontal: Sizes.fixPadding * 2.0, }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                            <View style={{ flex: 1, }}>
+                                <Text numberOfLines={1} style={{ ...Fonts.blackColor18SemiBold }}>
+                                    {fullname}
+                                </Text>
+                                <Text numberOfLines={1} style={{ ...Fonts.grayColor14Regular }}>
+                                    {occupation}
+                                </Text>
+                                <Text numberOfLines={1} style={{ ...Fonts.blackColor14Regular }}>
+                                    {description1}
+                                </Text>
+                                <Text numberOfLines={1}>
+                                    <Text style={{ ...Fonts.blackColor14Regular }}>
+                                        {description2}
+                                    </Text>
+                                </Text>
+                            </View>
+                            <TouchableOpacity
+                                activeOpacity={0.7}
+                                onPress={async () => {
+                                    let result = await ImagePicker.launchImageLibraryAsync({
+                                        mediaTypes: ImagePicker.MediaTypeOptions.All,
+                                        allowsEditing: true,
+                                        aspect: [4, 3],
+                                        quality: 1,
+                                    });
+                                    if (!result.canceled) {
+                                        const formData = new FormData();
+                                        setProfileImage(result.uri);
+                                        formData.append('files', {
+                                            uri: result.uri,
+                                            type: 'image/jpeg',
+                                            name: 'my-image.jpg',
+                                        });
+                                        formData.append('userId', userId)
+                                        try {
+                                            const response = await fetch(`${HOST}/upload_files?avatar=true`, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'userId': userId,
+                                                    'mediaType': 'image',
+                                                    'isAvatar': 'yes'
+                                                },
+                                                body: formData,
+                                            });
+                                            // const responseData = await response.json();
+                                        } catch (error) {
+                                            console.error(error);
+                                        }
+                                    }
+                                }}
+                            >
+                                {!!profileImage ? (
+                                    <LazyImage source={{ uri: profileImage }}
+                                        style={{ width: width / 4.0, height: width / 4.0, borderRadius: (width / 4.0) / 2.0 }}
+                                    />
+                                ) : (
+                                    <LazyImage
+                                        source={{ uri: `${HOST}/avatar?userId=${userId}` }}
+                                        style={{ width: width / 4.0, height: width / 4.0, borderRadius: (width / 4.0) / 2.0 }}
+                                    />
+                                )}
+
+                            </TouchableOpacity>
+
+                        </View>
+                    </View >}
                     {editProfileButton()}
                     {tabs(userId)}
                 </ScrollView>
@@ -206,13 +303,19 @@ const ProfileScreen = ({ navigation }) => {
         const renderItem = ({ item }) => (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => { alert(item.image) }}
+                // onPress={() => { alert(item.image) }}
                 style={{ marginHorizontal: Sizes.fixPadding - 5.0, marginBottom: Sizes.fixPadding }}
             >
-                <Text>videoPostsInfo</Text>
-                <Image
-                    source={item.image}
+                <Video
+                    // ref={video}
                     style={styles.galleryImageStyle}
+                    source={{
+                        uri: `${HOST}/video?userId=${userId}&index=${item.id}`,
+                    }}
+                    useNativeControls
+                    resizeMode={ResizeMode.CONTAIN}
+                    isLooping
+                // onPlaybackStatusUpdate={status => setStatus(() => status)}
                 />
                 <View style={styles.videoViewsInfoWrapStyle}>
                     <MaterialCommunityIcons name="play-outline" size={20} color={Colors.whiteColor} />
@@ -242,10 +345,9 @@ const ProfileScreen = ({ navigation }) => {
         const renderItem = ({ item }) => (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => { alert(item.image) }}
+                // onPress={() => { alert(item.image) }}
                 style={{ marginHorizontal: Sizes.fixPadding - 5.0, marginBottom: Sizes.fixPadding }}
             >
-                <Text>imagePostsInfo</Text>
                 <Image
                     source={item.image}
                     style={styles.galleryImageStyle}
@@ -299,10 +401,17 @@ const ProfileScreen = ({ navigation }) => {
                 onPress={() => { scrollToIndex({ index: index }) }}
                 style={{ flex: 1, alignItems: 'center' }}
             >
-                <View style={{ width: 24., height: 24.0, marginBottom: Sizes.fixPadding }}>
+                <View style={{
+                    width: 24., height: 24.0,
+                    marginBottom: Sizes.fixPadding
+                }}>
                     {icon}
                 </View>
-                <View style={{ height: 2.0, backgroundColor: index == currentTab ? Colors.primaryColor : Colors.lightGrayColor, width: '100%' }} />
+                <View style={{
+                    height: 2.0,
+                    backgroundColor: index == currentTab ? Colors.primaryColor : Colors.lightGrayColor,
+                    width: '100%'
+                }} />
             </TouchableOpacity>
         )
     }
@@ -336,6 +445,7 @@ const ProfileScreen = ({ navigation }) => {
                         {item === 2 && allPostsInfo(userId)}
                     </View>
                 )}
+                onScrollToIndexFailed={(error) => console.error(error)}
                 horizontal={true}
                 scrollEventThrottle={32}
                 pagingEnabled
@@ -358,99 +468,23 @@ const ProfileScreen = ({ navigation }) => {
             </TouchableOpacity>
         )
     }
-    function UserInfo() {
-        const { userStats } = useContext(UserContext)
-        const { fullname, description1, description2, occupation, posts, videos, followers, following } = userStats
-        const [profileImage, setProfileImage] = useState(null);
-        return (
-            <View style={{ marginHorizontal: Sizes.fixPadding * 2.0, }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                    <View style={{ flex: 1, }}>
-                        <Text numberOfLines={1} style={{ ...Fonts.blackColor18SemiBold }}>
-                            {fullname}
-                        </Text>
-                        <Text numberOfLines={1} style={{ ...Fonts.grayColor14Regular }}>
-                            {occupation}
-                        </Text>
-                        <Text numberOfLines={1} style={{ ...Fonts.blackColor14Regular }}>
-                            {description1}
-                        </Text>
-                        <Text numberOfLines={1}>
-                            <Text style={{ ...Fonts.blackColor14Regular }}>
-                                {description2}
-                            </Text>
-                        </Text>
-                    </View>
-                    <TouchableOpacity
-                        activeOpacity={0.7}
-                        onPress={async () => {
-                            let result = await ImagePicker.launchImageLibraryAsync({
-                                mediaTypes: ImagePicker.MediaTypeOptions.All,
-                                allowsEditing: true,
-                                aspect: [4, 3],
-                                quality: 1,
-                            });
-                            if (!result.canceled) {
-                                const formData = new FormData();
-                                setProfileImage(result.uri);
-                                formData.append('files', {
-                                    uri: result.uri,
-                                    type: 'image/jpeg',
-                                    name: 'my-image.jpg',
-                                });
-                                formData.append('userId', userId)
-                                try {
-                                    const response = await fetch(`${HOST}/upload_files`, {
-                                        method: 'POST',
-                                        headers: {
-                                            'userId': userId,
-                                            'mediaType': 'image',
-                                            'isAvatar': 'yes'
-                                        },
-                                        body: formData,
-                                    });
-                                    // const responseData = await response.json();
-                                } catch (error) {
-                                    console.error(error);
-                                }
-                            }
-                        }}
-                    >
-                        {!!profileImage ? (
-                            <LazyImage source={{ uri: profileImage }}
-                                style={{ width: width / 4.0, height: width / 4.0, borderRadius: (width / 4.0) / 2.0 }}
-                            />
-                        ) : (
-                            <LazyImage
-                                source={{ uri: `${HOST}/photos?userId=${userId}` }}
-                                style={{ width: width / 4.0, height: width / 4.0, borderRadius: (width / 4.0) / 2.0 }}
-                            />
-                        )}
-
-                    </TouchableOpacity>
-
-                </View>
-            </View >
-        )
-
-    }
 
     function UserPostsAndFollowersRelatedInfo() {
         const { userStats } = useContext(UserContext)
-        const { posts, videos, followers, following } = userStats
+        // const { posts, videos, followers, following } = userStats
         return (
             <View style={styles.userPostsAndFollowersRelatedInfoWrapStyle}>
                 <View style={{ alignItems: 'center', }}>
                     <Text style={{ ...Fonts.blackColor16Bold }}>
-                        {posts}
+                        {photosLength}
                     </Text>
                     <Text numberOfLines={1} style={{ maxWidth: width / 4.3, ...Fonts.grayColor14Regular }}>
-                        posts
+                        photos
                     </Text>
                 </View>
                 <View style={{ alignItems: 'center', }}>
                     <Text style={{ ...Fonts.blackColor16Bold }}>
-                        {videos}
+                        {videosLength}
                     </Text>
                     <Text numberOfLines={1} style={{ maxWidth: width / 4.3, ...Fonts.grayColor14Regular }}>
                         videos
