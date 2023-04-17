@@ -444,7 +444,7 @@ const ProfileScreen = ({ navigation }) => {
                             />
                         ) : (
                             <Image
-                                source={{ uri: `${HOST}/photos?userId=643b0ba844d20558509da3d1` }}
+                                source={{ uri: `${HOST}/photos?userId=${userId}` }}
                                 style={{ width: width / 4.0, height: width / 4.0, borderRadius: (width / 4.0) / 2.0 }}
                             />
                         )}
