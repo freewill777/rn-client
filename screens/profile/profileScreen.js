@@ -9,7 +9,7 @@ import {
 import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-
+import LazyImage from '../../components/LazyImage';
 import { UserContext } from '../../UserProvider';
 import { HOST } from '../../settings';
 
@@ -39,42 +39,6 @@ const allPosts = [
     {
         id: '6',
         image: require('../../assets/images/gallery/gallery6.png'),
-    },
-    {
-        id: '7',
-        image: require('../../assets/images/gallery/gallery7.png'),
-    },
-    {
-        id: '8',
-        image: require('../../assets/images/gallery/gallery8.png'),
-    },
-    {
-        id: '9',
-        image: require('../../assets/images/gallery/gallery9.png'),
-    },
-    {
-        id: '10',
-        image: require('../../assets/images/gallery/gallery10.png'),
-    },
-    {
-        id: '11',
-        image: require('../../assets/images/gallery/gallery11.png'),
-    },
-    {
-        id: '12',
-        image: require('../../assets/images/gallery/gallery12.png'),
-    },
-    {
-        id: '13',
-        image: require('../../assets/images/gallery/gallery13.png'),
-    },
-    {
-        id: '14',
-        image: require('../../assets/images/gallery/gallery14.png'),
-    },
-    {
-        id: '15',
-        image: require('../../assets/images/gallery/gallery15.png'),
     },
 ];
 
@@ -165,6 +129,11 @@ const ProfileScreen = ({ navigation }) => {
     const [currentTab, setCurrentTab] = useState(0);
     const [photo, setPhoto] = useState(null);
 
+    const [photos, setPhotos] = useState([]);
+    const [videos, setVideos] = useState([]);
+    const [photosLength, setPhotosLength] = useState(undefined)
+    const [videosLength, setVideosLength] = useState(undefined)
+
     const scrollToIndex = ({ index }) => {
         listRef.current.scrollToIndex({ animated: true, index: index });
         setCurrentTab(index);
@@ -199,21 +168,21 @@ const ProfileScreen = ({ navigation }) => {
                     <UserPostsAndFollowersRelatedInfo />
                     <UserInfo />
                     {editProfileButton()}
-                    {tabs()}
+                    {tabs(userId)}
                 </ScrollView>
             </View>
         </SafeAreaView>
     )
 
-    function allPostsInfo() {
+    function allPostsInfo(userId) {
         const renderItem = ({ item }) => (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => { alert('>Posts') }}
+                onPress={() => { alert(item.id) }}
                 style={{ marginHorizontal: Sizes.fixPadding - 5.0, marginBottom: Sizes.fixPadding }}
             >
-                <Image
-                    source={{ uri: 'https://codex.ngrok.app/photos?userId=643b0ba844d20558509da3d1' }}
+                <LazyImage
+                    source={{ uri: `${HOST}/photo?userId=${userId}&index=${item.id}` }}
                     style={styles.galleryImageStyle}
                 />
             </TouchableOpacity>
@@ -233,13 +202,14 @@ const ProfileScreen = ({ navigation }) => {
         )
     }
 
-    function videoPostsInfo() {
+    function videoPostsInfo(userId) {
         const renderItem = ({ item }) => (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => { navigation.push('Videos') }}
+                onPress={() => { alert(item.image) }}
                 style={{ marginHorizontal: Sizes.fixPadding - 5.0, marginBottom: Sizes.fixPadding }}
             >
+                <Text>videoPostsInfo</Text>
                 <Image
                     source={item.image}
                     style={styles.galleryImageStyle}
@@ -272,9 +242,10 @@ const ProfileScreen = ({ navigation }) => {
         const renderItem = ({ item }) => (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => { navigation.push('Posts') }}
+                onPress={() => { alert(item.image) }}
                 style={{ marginHorizontal: Sizes.fixPadding - 5.0, marginBottom: Sizes.fixPadding }}
             >
+                <Text>imagePostsInfo</Text>
                 <Image
                     source={item.image}
                     style={styles.galleryImageStyle}
@@ -299,9 +270,24 @@ const ProfileScreen = ({ navigation }) => {
     function tabBarHeader() {
         return (
             <View style={styles.tabBarHeaderWrapStyle}>
-                {tabBarHeaderSort({ icon: <MaterialCommunityIcons name="grid" size={23} color={currentTab == 0 ? Colors.primaryColor : Colors.lightGrayColor} />, index: 0, })}
-                {tabBarHeaderSort({ icon: <MaterialIcons name="airplay" size={22} color={currentTab == 1 ? Colors.primaryColor : Colors.lightGrayColor} />, index: 1, })}
-                {tabBarHeaderSort({ icon: <MaterialCommunityIcons name="tooltip-image-outline" size={24} color={currentTab == 2 ? Colors.primaryColor : Colors.lightGrayColor} />, index: 2, })}
+                {/* {tabBarHeaderSort({
+                    icon: <MaterialCommunityIcons
+                        name="grid" size={23}
+                        color={currentTab == 0 ? Colors.primaryColor : Colors.lightGrayColor} />,
+                    index: 0,
+                })} */}
+                {tabBarHeaderSort({
+                    icon: <MaterialCommunityIcons
+                        name="tooltip-image-outline"
+                        size={24} color={currentTab == 2 ? Colors.primaryColor : Colors.lightGrayColor} />,
+                    index: 2,
+                })}
+                {tabBarHeaderSort({
+                    icon: <MaterialIcons
+                        name="airplay" size={22}
+                        color={currentTab == 1 ? Colors.primaryColor : Colors.lightGrayColor} />,
+                    index: 1,
+                })}
             </View>
         )
     }
@@ -328,16 +314,16 @@ const ProfileScreen = ({ navigation }) => {
         setCurrentTab(pageNum);
     }
 
-    function tabs() {
+    function tabs(userId) {
         return (
             <View style={{ flex: 1, }}>
                 {tabBarHeader()}
-                {tabData()}
+                {tabData(userId)}
             </View>
         )
     }
 
-    function tabData() {
+    function tabData(userId) {
         return (
             <FlatList
                 ref={listRef}
@@ -345,16 +331,9 @@ const ProfileScreen = ({ navigation }) => {
                 data={[0, 1, 2]}
                 renderItem={({ item }) => (
                     <View style={{ width: width, }}>
-                        {item == 0
-                            ?
-                            allPostsInfo()
-                            :
-                            item == 1
-                                ?
-                                videoPostsInfo()
-                                :
-                                imagePostsInfo()
-                        }
+                        {item === 0 && imagePostsInfo()}
+                        {item === 1 && videoPostsInfo(userId)}
+                        {item === 2 && allPostsInfo(userId)}
                     </View>
                 )}
                 horizontal={true}
@@ -382,7 +361,7 @@ const ProfileScreen = ({ navigation }) => {
     function UserInfo() {
         const { userStats } = useContext(UserContext)
         const { fullname, description1, description2, occupation, posts, videos, followers, following } = userStats
-        const [image, setImage] = useState(null);
+        const [profileImage, setProfileImage] = useState(null);
         return (
             <View style={{ marginHorizontal: Sizes.fixPadding * 2.0, }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
@@ -405,7 +384,6 @@ const ProfileScreen = ({ navigation }) => {
                     <TouchableOpacity
                         activeOpacity={0.7}
                         onPress={async () => {
-
                             let result = await ImagePicker.launchImageLibraryAsync({
                                 mediaTypes: ImagePicker.MediaTypeOptions.All,
                                 allowsEditing: true,
@@ -414,7 +392,7 @@ const ProfileScreen = ({ navigation }) => {
                             });
                             if (!result.canceled) {
                                 const formData = new FormData();
-                                setImage(result.uri);
+                                setProfileImage(result.uri);
                                 formData.append('files', {
                                     uri: result.uri,
                                     type: 'image/jpeg',
@@ -438,12 +416,12 @@ const ProfileScreen = ({ navigation }) => {
                             }
                         }}
                     >
-                        {!!image ? (
-                            <Image source={{ uri: image }}
+                        {!!profileImage ? (
+                            <LazyImage source={{ uri: profileImage }}
                                 style={{ width: width / 4.0, height: width / 4.0, borderRadius: (width / 4.0) / 2.0 }}
                             />
                         ) : (
-                            <Image
+                            <LazyImage
                                 source={{ uri: `${HOST}/photos?userId=${userId}` }}
                                 style={{ width: width / 4.0, height: width / 4.0, borderRadius: (width / 4.0) / 2.0 }}
                             />
@@ -536,7 +514,7 @@ const styles = StyleSheet.create({
         elevation: 3.0,
     },
     galleryImageStyle: {
-        maxWidth: (width / 3.0) - 20.0,
+        width: (width / 3.0) - 20.0,
         height: height / 6.0,
         flex: 1,
     },
