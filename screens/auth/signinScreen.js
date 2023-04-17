@@ -53,6 +53,7 @@ const SigninScreen = ({ navigation }) => {
                 alert('eroare')
             }
         } catch (error) {
+            alert("Invalid e-mail or password.")
             console.error(error);
         }
     }

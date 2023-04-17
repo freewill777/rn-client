@@ -21,8 +21,13 @@ const SignupScreen = ({ navigation }) => {
 
     async function register() {
         try {
-            if (!email.includes('@')) {
-                alert("email not valid!!")
+            const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            if (!email.match(validRegex)) {
+                alert("Email is not valid!")
+                return
+            }
+            if (confirmPassword!==password) {
+                alert("Passwords do not match!")
                 return
             }
             const response = await fetch(`${HOST}/register?name=${name}&password=${password}&email=${email}`,
