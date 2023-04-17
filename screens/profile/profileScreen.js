@@ -287,7 +287,9 @@ const ProfileScreen = ({ navigation }) => {
         return (
             <View style={{ flex: 1, }}>
                 <FlatList
-                    data={allPosts}
+                    data={[...Array(photosLength)].map((_, index) => ({
+                        id: index,
+                    }))}
                     keyExtractor={(item) => `${item.id}`}
                     renderItem={renderItem}
                     numColumns={3}
