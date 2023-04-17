@@ -53,7 +53,7 @@ const SigninScreen = ({ navigation }) => {
                 alert('eroare')
             }
         } catch (error) {
-            alert("Invalid e-mail or password.")
+            alert("E-mailul sau parola nu sunt valide.")
             console.error(error);
         }
     }

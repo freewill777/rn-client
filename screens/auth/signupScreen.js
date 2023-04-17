@@ -23,11 +23,11 @@ const SignupScreen = ({ navigation }) => {
         try {
             const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
             if (!email.match(validRegex)) {
-                alert("Email is not valid!")
+                alert("Email-ul nu este valid!")
                 return
             }
             if (confirmPassword!==password) {
-                alert("Passwords do not match!")
+                alert("Parolele nu sunt identice!")
                 return
             }
             const response = await fetch(`${HOST}/register?name=${name}&password=${password}&email=${email}`,
@@ -44,7 +44,7 @@ const SignupScreen = ({ navigation }) => {
                 navigation.push('BottomTabBar')
             }
             if (id === undefined) {
-                alert('eroare')
+                alert('Inregistrarea nu a putut fi efectuata.')
             }
         } catch (error) {
             console.error('___', error);
