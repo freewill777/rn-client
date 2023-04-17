@@ -23,7 +23,8 @@ const SignupScreen = ({ navigation }) => {
         alert(password)
         try {
             console.log(email, password)
-            const response = await fetch(`https://codex.ngrok.app/register?name=${name}&password=${password}`);
+            // const response = await fetch(`https://codex.ngrok.app/register?name=${name}&password=${password}`);
+            const response = await fetch(`https://codex.ngrok.app/register?name=${name}&email=${email}&password=${password}`);
             const json = await response.json();
             console.log('json', json)
             const { id } = json

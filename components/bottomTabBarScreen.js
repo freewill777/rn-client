@@ -29,7 +29,7 @@ const BottomTabBarScreen = ({ navigation }) => {
                 {index === 1 && <FeedScreen navigation={navigation} />}
                 {index === 2 && <MessageScreen navigation={navigation} />}
                 {index === 3 && <NotificationScreen navigation={navigation} />}
-                {index === 4 && <PlusScreen />}
+                {index === 4 && <PlusScreen navigation={navigation} />}
                 {index === 5 && <ProfileScreen navigation={navigation} />}
                 {index === 6 && <GroupsScreen navigation={navigation} />}
                 {index === 7 && <EventsScreen navigation={navigation} />}

@@ -1,5 +1,11 @@
-import React, { useState, useRef, useContext, useLayoutEffect, useEffect } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions, ScrollView, FlatList, Image, TouchableOpacity } from 'react-native'
+import React, { useState, useRef, useContext, useEffect } from 'react'
+import {
+    StyleSheet, Text, View,
+    SafeAreaView, StatusBar, Dimensions,
+    ScrollView, FlatList, TouchableOpacity,
+    Image,
+} from 'react-native'
+
 import { Colors, Fonts, Sizes } from '../../constants/styles'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -157,6 +163,7 @@ const imagePosts = [
 const ProfileScreen = ({ navigation }) => {
     const { userId, name, setUserStats, setName } = useContext(UserContext)
     const [currentTab, setCurrentTab] = useState(0);
+    const [photo, setPhoto] = useState(null);
 
     const scrollToIndex = ({ index }) => {
         listRef.current.scrollToIndex({ animated: true, index: index });
@@ -182,6 +189,7 @@ const ProfileScreen = ({ navigation }) => {
         }
         getUserData()
     }, [userId])
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
             <StatusBar translucent={false} backgroundColor={Colors.primaryColor} />
@@ -201,11 +209,11 @@ const ProfileScreen = ({ navigation }) => {
         const renderItem = ({ item }) => (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => { navigation.push('Posts') }}
+                onPress={() => { alert('>Posts') }}
                 style={{ marginHorizontal: Sizes.fixPadding - 5.0, marginBottom: Sizes.fixPadding }}
             >
                 <Image
-                    source={item.image}
+                    source={{ uri: 'https://codex.ngrok.app/photos?userId=643b0ba844d20558509da3d1' }}
                     style={styles.galleryImageStyle}
                 />
             </TouchableOpacity>
@@ -436,7 +444,7 @@ const ProfileScreen = ({ navigation }) => {
                             />
                         ) : (
                             <Image
-                                source={require('../../assets/images/users/user43.png')}
+                                source={{ uri: `${HOST}/photos?userId=643b0ba844d20558509da3d1` }}
                                 style={{ width: width / 4.0, height: width / 4.0, borderRadius: (width / 4.0) / 2.0 }}
                             />
                         )}

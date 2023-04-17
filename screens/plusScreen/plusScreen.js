@@ -2,15 +2,24 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Alert, ImageBackground, Image } from 'react-native'
 import { Camera } from 'expo-camera'
 import { UserContext } from '../../UserProvider'
+import { HOST } from '../../settings'
+import { BottomBarIndexContext } from '../../components/botomTabBarIndexContext'
+import { Colors } from '../../constants/styles'
+import { MaterialIcons } from '@expo/vector-icons';
+import Recorder from './recorder'
 let camera
 
-export default function PlusScreen() {
+export default function PlusScreen({ navigation }) {
     const { userId } = React.useContext(UserContext)
+    const { changeIndex } = React.useContext(BottomBarIndexContext)
+
     const [startCamera, setStartCamera] = React.useState(false)
     const [previewVisible, setPreviewVisible] = React.useState(false)
     const [capturedImage, setCapturedImage] = React.useState(null)
     const [cameraType, setCameraType] = React.useState(Camera.Constants.Type.back)
     const [flashMode, setFlashMode] = React.useState('off')
+    const [recordMode, setRecordMode] = React.useState('off')
+
 
     const __startCamera = async () => {
         const { status } = await Camera.requestCameraPermissionsAsync()
@@ -38,7 +47,7 @@ export default function PlusScreen() {
         });
         formData.append('userId', userId)
         try {
-            const response = await fetch(`http://50ab-89-137-216-219.ngrok-free.app/upload_files`, {
+            const response = await fetch(`${HOST}/upload_files`, {
                 method: 'POST',
                 headers: {
                     'userId': userId,
@@ -49,6 +58,8 @@ export default function PlusScreen() {
             // const responseData = await response.json();
         } catch (error) {
             console.error(error);
+        } finally {
+            setPreviewVisible(false)
         }
 
     }
@@ -73,7 +84,7 @@ export default function PlusScreen() {
             setCameraType('back')
         }
     }
-    return (
+    return recordMode === 'off' ? (
         <View style={styles.container}>
             {startCamera ? (
                 <View
@@ -115,13 +126,16 @@ export default function PlusScreen() {
                                         style={{
                                             backgroundColor: flashMode === 'off' ? '#000' : '#fff',
                                             borderRadius: '50%',
-                                            height: 25,
-                                            width: 25
+                                            height: 40,
+                                            width: 40,
+                                            left: 3
                                         }}
                                     >
                                         <Text
                                             style={{
-                                                fontSize: 20
+                                                fontSize: 18,
+                                                left: 6,
+                                                top: 6
                                             }}
                                         >
                                             ⚡️
@@ -132,8 +146,9 @@ export default function PlusScreen() {
                                         style={{
                                             marginTop: 20,
                                             borderRadius: '50%',
-                                            height: 25,
-                                            width: 25
+                                            height: 35,
+                                            width: 35,
+                                            left: 8
                                         }}
                                     >
                                         <Text
@@ -142,6 +157,19 @@ export default function PlusScreen() {
                                             }}
                                         >
                                             {cameraType === 'front' ? '🤳' : '📷'}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => setStartCamera(false)}
+                                        style={{
+                                            marginTop: 20,
+                                            borderRadius: '50%',
+                                            height: 35,
+                                            width: 35
+                                        }}
+                                    >
+                                        <Text style={{ fontSize: 20 }}>
+                                            <MaterialIcons name="close" size={32} color={Colors.whiteColor} />
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -173,6 +201,16 @@ export default function PlusScreen() {
                                                 backgroundColor: '#fff'
                                             }}
                                         />
+                                        {/* <TouchableOpacity
+                                            onPress={() => alert('record1')}
+                                            style={{
+                                                width: 70,
+                                                height: 70,
+                                                bottom: 0,
+                                                borderRadius: 50,
+                                                backgroundColor: '#fff'
+                                            }}
+                                        /> */}
                                     </View>
                                 </View>
                             </View>
@@ -191,13 +229,14 @@ export default function PlusScreen() {
                     <TouchableOpacity
                         onPress={__startCamera}
                         style={{
-                            width: 130,
+                            width: 200,
                             borderRadius: 4,
-                            backgroundColor: '#14274e',
+                            backgroundColor: Colors.primaryColor,
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            height: 40
+                            height: 47,
+                            margin: 10
                         }}
                     >
                         <Text
@@ -210,9 +249,80 @@ export default function PlusScreen() {
                             Take picture
                         </Text>
                     </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => setRecordMode('on')}
+                        style={{
+                            width: 200,
+                            borderRadius: 4,
+                            backgroundColor: Colors.primaryColor,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: 47,
+                            margin: 10
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color: '#fff',
+                                fontWeight: 'bold',
+                                textAlign: 'center'
+                            }}
+                        >
+                            Upload video
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={__startCamera}
+                        style={{
+                            width: 200,
+                            borderRadius: 4,
+                            backgroundColor: Colors.primaryColor,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: 47,
+                            margin: 10
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color: '#fff',
+                                fontWeight: 'bold',
+                                textAlign: 'center'
+                            }}
+                        >
+                            Upload story
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => changeIndex(1)}
+                        style={{
+                            width: 150,
+                            borderRadius: 4,
+                            backgroundColor: Colors.grayColor,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: 50,
+                            margin: 15
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color: '#fff',
+                                fontWeight: 'bold',
+                                textAlign: 'center'
+                            }}
+                        >
+                            Close
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             )}
         </View>
+    ) : (
+        <Recorder turnOff={() => setRecordMode("off")} />
     )
 }
 
